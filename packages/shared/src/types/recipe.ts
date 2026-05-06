@@ -45,7 +45,7 @@ export type RecipeItem =
   | InstructionBlock
   | EquipmentInstruction;
 
-export type RecipeItemKind = RecipeItem['kind'];
+export type RecipeItemKind = RecipeItem["kind"];
 
 export interface RecipeVersion {
   readonly id: string;

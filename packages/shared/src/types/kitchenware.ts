@@ -25,7 +25,7 @@ export interface Equipment {
 
 export type Kitchenware = Ingredient | Container | Equipment;
 
-export type KitchenwareType = Kitchenware['kind'];
+export type KitchenwareType = Kitchenware["kind"];
 
 export function is_ingredient(k: Kitchenware): k is Ingredient {
   return k.kind === "ingredient";

@@ -32,12 +32,24 @@ export default [
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "quotes": ["error", "double", { "avoidEscape": true }],
+      // TypeScript allows `const Foo = [...] as const; type Foo = ...` (merged declaration).
+      // The base no-redeclare rule doesn't understand this — disable it in TS files.
+      "no-redeclare": "off",
     },
   },
   {
     files: ["packages/*/src/**/*.tsx"],
     rules: {
       "react/react-in-jsx-scope": "off",
+    },
+  },
+  {
+    // snake_case hook names (use_foo) are not recognised by rules-of-hooks,
+    // which expects useFoo. The project convention requires snake_case, so we
+    // disable the rule only in hook definition files.
+    files: ["packages/*/src/hooks/**/*.ts"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
     },
   },
   {
