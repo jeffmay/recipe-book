@@ -1,19 +1,23 @@
 export type MeasurementType = "volume" | "weight" | "count";
 
-export type VolumeUnit =
-  | "tsp"
-  | "tbsp"
-  | "fl_oz"
-  | "cup"
-  | "pint"
-  | "quart"
-  | "gallon"
-  | "ml"
-  | "l";
+export const VolumeUnit = [
+  "tsp",
+  "tbsp",
+  "fl_oz",
+  "cup",
+  "pint",
+  "quart",
+  "gallon",
+  "ml",
+  "l"
+] as const;
+export type VolumeUnit = typeof VolumeUnit[number];
 
-export type WeightUnit = "oz" | "lb" | "g" | "kg";
+export const WeightUnit = ["oz", "lb", "g", "kg"] as const;
+export type WeightUnit = typeof WeightUnit[number];
 
-export type CountUnit = "whole" | "pinch" | "dash";
+export const CountUnit = ["whole", "pinch", "dash"] as const;
+export type CountUnit = typeof CountUnit[number];
 
 export type MeasurementUnit = VolumeUnit | WeightUnit | CountUnit;
 
@@ -27,10 +31,8 @@ export interface Measurement {
   readonly unit: MeasurementUnit;
 }
 
-export function unit_type(unit: MeasurementUnit): MeasurementType {
-  const volume_units: VolumeUnit[] = ["tsp", "tbsp", "fl_oz", "cup", "pint", "quart", "gallon", "ml", "l"];
-  const weight_units: WeightUnit[] = ["oz", "lb", "g", "kg"];
-  if ((volume_units as MeasurementUnit[]).includes(unit)) return "volume";
-  if ((weight_units as MeasurementUnit[]).includes(unit)) return "weight";
-  return "count";
+export function unit_type(unit: MeasurementUnit): MeasurementType | undefined {
+  if (VolumeUnit.includes(unit as VolumeUnit)) return "volume";
+  if (WeightUnit.includes(unit as WeightUnit)) return "weight";
+  if (CountUnit.includes(unit as CountUnit)) return "count";
 }

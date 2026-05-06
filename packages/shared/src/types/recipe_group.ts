@@ -1,4 +1,5 @@
-export type SortOrder = "last_modified" | "created" | "alphabetical" | "manual";
+export const SortOrder = ["last_modified", "created", "alphabetical", "manual"] as const;
+export type SortOrder = typeof SortOrder[number];
 
 export interface RecipeGroup {
   readonly id: string;

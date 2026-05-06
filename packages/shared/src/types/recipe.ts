@@ -1,12 +1,5 @@
 import type { Measurement } from "./measurement.js";
 
-export type RecipeItemKind =
-  | "ingredient_item"
-  | "container_item"
-  | "section_label"
-  | "instruction_block"
-  | "equipment_instruction";
-
 export interface IngredientItem {
   readonly kind: "ingredient_item";
   readonly id: string;
@@ -51,6 +44,8 @@ export type RecipeItem =
   | SectionLabel
   | InstructionBlock
   | EquipmentInstruction;
+
+export type RecipeItemKind = RecipeItem['kind'];
 
 export interface RecipeVersion {
   readonly id: string;
