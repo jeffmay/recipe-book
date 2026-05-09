@@ -249,6 +249,7 @@ npm run lint
 - [x] External label filter: selecting labels in `LabelTable` and clicking Filter All/Any updates a filter passed to `IngredientsTable` that pre-filters ingredients before tree-building
 - [x] ArkType v2 schemas replace manual validation in `ingredient_store.ts` and `label_store.ts`; `MeasurementType` exported as both ArkType schema value and TypeScript type alias from `measurement.ts`
 - [x] PapaParse replaces hand-written CSV parser in `parse_kitchenware_csv.ts`; per-kind ArkType schemas (`IngredientRow`, `ContainerRow`, `EquipmentRow`) with pipe morphs for "+" delimited label fields
+- [x] `LabelEditor` component (`react-select` `CreatableSelect isMulti`) — add/remove existing labels from a dropdown or type to create a new one; replaces the plain text-input in the `IngredientsTable` Labels cell editor; cancel via ✗ button or Escape (when dropdown is closed)
 
 ---
 

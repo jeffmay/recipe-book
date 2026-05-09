@@ -20,6 +20,7 @@ import {
 } from "@tanstack/react-table";
 import type { Ingredient, IngredientId, KitchenwareLabel, KitchenwareLabelId, MeasurementType } from "@recipe-book/shared";
 import { MultiSelectFilter } from "./MultiSelectFilter.js";
+import { LabelEditor } from "./LabelEditor.js";
 import { build_ingredient_tree, type IngredientRow } from "./build_ingredient_tree.js";
 import "./IngredientsTable.css";
 
@@ -45,6 +46,7 @@ declare module "@tanstack/react-table" {
     on_commit_edit: (ingredient_id: IngredientId, col_id: string) => void;
     on_cancel_edit: (ingredient_id: IngredientId, col_id: string) => void;
     all_ingredients: readonly Ingredient[];
+    all_label_names: readonly string[];
     selected_ids: ReadonlySet<IngredientId>;
     on_toggle_select: (id: IngredientId) => void;
     on_toggle_select_all: (ids: readonly IngredientId[]) => void;
@@ -239,46 +241,26 @@ function LabelsCell({
   table,
 }: CellContext<IngredientRow, readonly string[]>) {
   const labels = getValue();
-  const display = labels.join(", ");
   const meta = table.options.meta!;
   const key = pkey(row.original.id, column.id);
   const pending = meta.pending_edits.get(key);
 
   if (pending !== undefined) {
     return (
-      <span className="it-editing">
-        <input
-          type="text"
-          value={pending}
-          className="it-edit-input it-edit-input--wide"
-          autoFocus
-          placeholder="label1, label2"
-          aria-label={`Edit labels for ${row.original.name}`}
-          onChange={(e) => meta.on_update_edit(row.original.id, column.id, e.target.value)}
-          onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === "Enter") meta.on_commit_edit(row.original.id, column.id);
-            if (e.key === "Escape") meta.on_cancel_edit(row.original.id, column.id);
-          }}
-        />
-        <button
-          type="button"
-          className="it-confirm-btn"
-          onClick={() => meta.on_commit_edit(row.original.id, column.id)}
-          aria-label="Confirm edit"
-        >
-          ✔︎
-        </button>
-        <button
-          type="button"
-          className="it-cancel-btn"
-          onClick={() => meta.on_cancel_edit(row.original.id, column.id)}
-          aria-label="Cancel edit"
-        >
-          ✗
-        </button>
-      </span>
+      <LabelEditor
+        selected_label_names={parse_labels(pending)}
+        all_label_names={meta.all_label_names}
+        ingredient_name={row.original.name}
+        on_change={(names) =>
+          meta.on_update_edit(row.original.id, column.id, names.join(", "))
+        }
+        on_commit={() => meta.on_commit_edit(row.original.id, column.id)}
+        on_cancel={() => meta.on_cancel_edit(row.original.id, column.id)}
+      />
     );
   }
+
+  const display = labels.join(", ");
   return (
     <span
       className="it-editable"
@@ -720,6 +702,7 @@ export function IngredientsTable({
       on_commit_edit,
       on_cancel_edit,
       all_ingredients: ingredients,
+      all_label_names: all_label_names,
       selected_ids,
       on_toggle_select: toggle_select,
       on_toggle_select_all: toggle_select_all,

@@ -260,13 +260,15 @@ describe("IngredientsTable — editable cells", () => {
   });
 
   it("calls on_set_labels when committing labels edit", async () => {
-    setup([FLOUR]);
-    await screen.findByRole("button", { name: "Edit labels for Flour" });
-    await userEvent.click(screen.getByRole("button", { name: "Edit labels for Flour" }));
-    const input = screen.getByRole("textbox", { name: "Edit labels for Flour" });
-    await userEvent.clear(input);
-    await userEvent.type(input, "baking, starch{Enter}");
-    expect(on_set_labels).toHaveBeenCalledWith("flour", ["baking", "starch"]);
+    setup([DAIRY]);
+    await screen.findByRole("button", { name: "Edit labels for Dairy" });
+    await userEvent.click(screen.getByRole("button", { name: "Edit labels for Dairy" }));
+    // LabelEditor opens — type and create a new label, then commit
+    const input = screen.getByRole("combobox", { name: "Edit labels for Dairy" });
+    await userEvent.type(input, "baking");
+    await userEvent.click(await screen.findByText(/Create "baking"/));
+    await userEvent.click(screen.getByRole("button", { name: "Confirm edit" }));
+    expect(on_set_labels).toHaveBeenCalledWith("dairy", ["baking"]);
   });
 });
 

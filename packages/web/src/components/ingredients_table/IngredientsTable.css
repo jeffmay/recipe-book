@@ -306,6 +306,104 @@
   cursor: default;
 }
 
+/* Label editor (react-select CreatableSelect) */
+.it-label-editor {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.it-label-editor > :first-child {
+  flex: 1;
+  min-width: 10vw;
+}
+
+.le__control {
+  min-height: unset !important;
+  font-size: 0.9em;
+  border-color: var(--color-border) !important;
+  background: var(--color-bg) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: text;
+}
+
+.le__control:hover {
+  border-color: var(--color-fg) !important;
+}
+
+.le__value-container {
+  padding: 1px 4px !important;
+  gap: 2px;
+}
+
+.le__multi-value {
+  background: var(--color-border) !important;
+  border-radius: 2px !important;
+  margin: 1px !important;
+}
+
+.le__multi-value__label {
+  font-size: 0.85em !important;
+  color: var(--color-fg) !important;
+  padding: 1px 3px !important;
+}
+
+.le__multi-value__remove {
+  color: var(--color-fg) !important;
+  padding: 0 3px !important;
+}
+
+.le__multi-value__remove:hover {
+  background: var(--color-fg) !important;
+  color: var(--color-bg) !important;
+}
+
+.le__input {
+  color: var(--color-fg) !important;
+  font-family: var(--font-body) !important;
+}
+
+.le__placeholder {
+  font-size: 0.9em !important;
+  color: var(--color-muted) !important;
+}
+
+.le__menu {
+  font-size: 0.9em !important;
+  border-radius: 0 !important;
+  border: var(--border-width) solid var(--color-border) !important;
+  background: var(--color-bg) !important;
+}
+
+.le__option {
+  color: var(--color-fg) !important;
+  background: var(--color-bg) !important;
+  padding: 4px 8px !important;
+}
+
+.le__option--is-focused {
+  background: var(--color-border) !important;
+}
+
+.le__option--is-selected {
+  background: var(--color-fg) !important;
+  color: var(--color-bg) !important;
+}
+
+.le__dropdown-indicator {
+  padding: 2px 4px !important;
+}
+
+.le__indicator-separator {
+  display: none;
+}
+
+.le__clear-indicator {
+  padding: 2px 4px !important;
+}
+
 /* Misc */
 .it-muted {
   color: var(--color-muted);

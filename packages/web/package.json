@@ -26,6 +26,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-select": "^5.10.2",
     "vite": "^8.0.10",
     "y-indexeddb": "^9.0.12",
     "yjs": "^13.6.30"
