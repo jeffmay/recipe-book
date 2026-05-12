@@ -1,5 +1,6 @@
-import { type, type Type } from "arktype";
+import { type } from "arktype";
 import { nanoid } from "nanoid";
+import { padStart, PadStart } from "string-ts";
 import { type Companion } from "./companion";
 
 /**
@@ -7,7 +8,7 @@ import { type Companion } from "./companion";
  * 
  * Satisfying this type signature allows you to use the functions in this module.
  */
-export interface IdCompanion<N extends string, L extends number = number> extends Companion<N, Type<type.brand<string, N>>> {
+export interface IdCompanion<N extends string, L extends number = number> extends Companion<N, type.brand<string, N>> {
   readonly length: L;
 }
 
@@ -23,46 +24,18 @@ export function IdCompanion<N extends string, L extends number, R extends IdComp
   const base: IdCompanion<N, L> = {
     type: type.string.exactlyLength(length).brand(name),
     name,
-    length
+    length,
   };
   return extend ? extend(base) : base as R;
 }
 
 /**
- * Pads the given string on the left with the specified padding string until it reaches the desired length.
- * Defaults to "-" so that padded IDs sort before random IDs in ascending order.
- *
- * @param id the string to pad
- * @param length the desired length
- * @param padding the padding string (default: "-")
- * @returns the id padded on the left to the desired length
- * @throws an error if the input string is already longer than the desired length
- */
-export function pad_left<S extends string, L extends number, P extends string = "-">(id: S, length: L, padding?: P): PadLeftToMax<S, P, L> {
-  if (id.length > length) {
-    throw new Error(`ID is too long: ${id}`);
-  }
-  // TODO: Handle padding with multiple characters
-  const str = (padding ?? "-").repeat(length - id.length) + id;
-  return str as PadLeftToMax<S, P, L>;
-}
-
-/**
- * Pads the given string on the right with the specified padding string until it reaches the desired length.
+ * A simple no-op function that brands a string with a given IdCompanion's branding type.
  * 
- * @param id the string to pad
- * @param length the desired length
- * @param padding the padding string
- * @returns the id padded on the right to the desired length
- * @throws an error if the input string is already longer than the desired length
+ * This is useful for avoid the `as` keyword and potentially getting the input string type wrong or losing the literal type information.
  */
-export function pad_right<S extends string, L extends number, P extends string = "0">(id: S, length: L, padding?: P): PadRightToMax<S, P, L> {
-  if (id.length > length) {
-    throw new Error(`ID is too long: ${id}`);
-  }
-  // TODO: Handle padding with multiple characters
-  const str = id + (padding ?? "0").repeat(length - id.length);
-  return str as PadRightToMax<S, P, L>;
+export function branded<const N extends string, const S extends string>(_companion: IdCompanion<N, number>, str: S): type.brand<S, N> {
+  return str as type.brand<S, N>
 }
 
 /**
@@ -75,8 +48,8 @@ export function pad_right<S extends string, L extends number, P extends string =
  *
  * @note use this for deterministic IDs (typically for fixtures/testing); use random_id for new production IDs.
  */
-export function padded_id<S extends string, N extends string, L extends number>(companion: IdCompanion<N, L>, id: S): type.brand<PadLeftToMax<S, "-", L>, N> {
-  return pad_left(id, companion.length, "-") as type.brand<PadLeftToMax<S, "-", L>, N>;
+export function padded_id<S extends string, N extends string, L extends number>(companion: IdCompanion<N, L>, id: S): type.brand<PadStart<S, L, "-">, N> {
+  return branded(companion, padStart(id, companion.length, "-"));
 }
 
 /**
@@ -86,7 +59,7 @@ export function padded_id<S extends string, N extends string, L extends number>(
  * @returns a random identifier of the type specified by the companion's type function.
  */
 export function random_id<N extends string, L extends number>(companion: IdCompanion<N, L>): type.brand<string, N> {
-  return nanoid(companion.length) as type.brand<string, N>;
+  return branded(companion, nanoid(companion.length));
 }
 
 /**
@@ -104,52 +77,5 @@ export function load_id<N extends string>(_companion: IdCompanion<N>, id: string
   // if (result instanceof type.errors) {
   //   console.warn(`Invalid ${companion.idName}: ${id}`, result.summary);
   // }
-  return id as type.brand<string, N>;
+  return branded(_companion, id);
 }
-
-/*
- * Type-level string padding utilities.
- */
-
-// Build a tuple of length N
-type BuildTuple<N extends number, T extends unknown[] = []> =
-  T["length"] extends N ? T : BuildTuple<N, [...T, 0]>;
-
-// Add one to a tuple
-type Inc<T extends unknown[]> = [...T, 0];
-
-// Convert string to tuple (length = number of characters / code units)
-type StringToTuple<S extends string, T extends unknown[] = []> =
-  // eslint-disable-next-line
-  S extends `${infer _First}${infer Rest}` ? StringToTuple<Rest, Inc<T>> : T;
-type StrLen<S extends string> = StringToTuple<S>["length"];
-
-// Compare two numbers A and B (both small literal numbers) -> true if A >= B
-type GTE<A extends number, B extends number> =
-  BuildTuple<B> extends infer TB
-  ? TB extends unknown[]
-  ? // if we can split a tuple of length A into [..B, ...rest], then A >= B
-  // eslint-disable-next-line
-  BuildTuple<A> extends [...TB, ...infer _Rest] ? true : false
-  : never
-  : never;
-
-// Prepend filler once
-type PrependOnce<F extends string, S extends string> = `${F}${S}`;
-
-// Append filler once (for right padding)
-type AppendOnce<S extends string, F extends string> = `${S}${F}`;
-
-// Pad left recursively until StrLen<S> >= Max
-type PadLeftToMax<
-  S extends string,
-  F extends string,
-  Max extends number
-> = GTE<StrLen<S>, Max> extends true ? S : PadLeftToMax<PrependOnce<F, S>, F, Max>;
-
-// Pad right recursively until StrLen<S> >= Max
-type PadRightToMax<
-  S extends string,
-  F extends string,
-  Max extends number
-> = GTE<StrLen<S>, Max> extends true ? S : PadRightToMax<AppendOnce<S, F>, F, Max>;

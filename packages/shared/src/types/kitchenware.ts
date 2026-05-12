@@ -1,14 +1,13 @@
 import { type } from "arktype";
+import { IdCompanion } from "./ids.js";
 import { MeasurementType } from "./measurement.js";
 import { setOf } from "./sets.js";
-import { IdCompanion } from "./ids.js";
-import { Companion } from "./companion.js";
 
 // externalized to avoid circular definitions in KitchenwareId
 const KitchenwareIdLength = 12 as const;
 
 export type KitchenwareId = Kitchenware["id"];
-export const KitchenwareId = Companion("KitchenwareId", type(`string == ${KitchenwareIdLength}` as type.cast<KitchenwareId>), (base) => {
+export const KitchenwareId = IdCompanion("KitchenwareId", KitchenwareIdLength, (base) => {
   return {
     ...base,
     length: KitchenwareIdLength,

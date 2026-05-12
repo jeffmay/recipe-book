@@ -1,76 +1,82 @@
 import { type } from "arktype";
+import { AnyCompanion, Companion } from "./companion.js";
+import { EnumCompanion } from "./enums.js";
+import { IdCompanion } from "./ids.js";
 import { ContainerId, EquipmentId, IngredientId } from "./kitchenware.js";
 import { Measurement } from "./measurement.js";
-import { IdCompanion } from "./ids.js";
-import { Companion } from "./companion.js";
-import { EnumCompanion } from "./enums.js";
 
 export const RecipeId = IdCompanion("RecipeId", 12);
 export type RecipeId = typeof RecipeId.type.infer;
 
-export const RecipeItemId = IdCompanion("RecipeItemId", 12);
-export type RecipeItemId = typeof RecipeItemId.type.infer;
+export const SectionItemId = IdCompanion("SectionItemId", 12);
+export type SectionItemId = typeof SectionItemId.type.infer;
 
-export const IngredientItem = Companion("IngredientItem", type({
-  kind: "'ingredient'",
-  id: RecipeItemId.type,
-  ingredient_id: IngredientId.type,
-  quantity: Measurement,
-  "notes?": "string",
-}));
-export type IngredientItem = typeof IngredientItem.type.infer;
+// Use scope syntax to allow recursive definitions
+const section = type.scope({
+  "#BaseSectionItem": {
+    id: () => SectionItemId.type,
+    "notes?": "string[]",
+  },
+  IngredientItem: {
+    "...": "BaseSectionItem",
+    kind: "'ingredient'",
+    ingredient_id: IngredientId.type,
+    quantity: Measurement,
+  },
+  ContainerItem: {
+    "...": "BaseSectionItem",
+    kind: "'container'",
+    container_id: ContainerId.type,
+    contents: "IngredientItem[]",
+  },
+  TextBlock: {
+    "...": "BaseSectionItem",
+    kind: "'text_block'",
+    text: "string",
+  },
+  Instruction: {
+    "...": "BaseSectionItem",
+    kind: "'instruction'",
+    instruction: "string", // ex: chop, mix, blend, stir, bake, fry, etc...
+    "equipment_id?": () => EquipmentId.type,
+    "items?": () => SectionItemId.type.array(),
+    "duration_seconds?": "number",
+  },
+  Section: {
+    "...": "BaseSectionItem",
+    kind: "'section'",
+    "header?": "string",
+    contents: "SectionItem[]",
+  },
+  SectionItem: "IngredientItem | ContainerItem | TextBlock | Instruction | Section",
+}).export()
 
-export const ContainerItem = Companion("ContainerItem", type({
-  kind: "'container'",
-  id: RecipeItemId.type,
-  container_id: ContainerId.type,
-  contents: IngredientItem.type.array(),
-  "notes?": "string",
-}));
-export type ContainerItem = typeof ContainerItem.type.infer;
+export const SectionItemKind = EnumCompanion("SectionItemKind", [
+  "ingredient",
+  "container",
+  "text_block",
+  "instruction",
+  "section",
+]) satisfies AnyCompanion<SectionItem["kind"]>;
+export type SectionItemKind = typeof SectionItemKind.type.infer;
 
-export const SectionHeader = Companion("SectionHeader", type({
-  kind: "'section_header'",
-  id: RecipeItemId.type,
-  label: "string",
-}));
-export type SectionHeader = typeof SectionHeader.type.infer;
+export const IngredientItem = Companion("IngredientItem", section.IngredientItem);
+export type IngredientItem = typeof section.IngredientItem.infer;
 
-export const TextBlock = Companion("TextBlock", type({
-  kind: "'text_block'",
-  id: RecipeItemId.type,
-  text: "string",
-  "notes?": "string",
-}));
-export type TextBlock = typeof TextBlock.type.infer;
+export const ContainerItem = Companion("ContainerItem", section.ContainerItem);
+export type ContainerItem = typeof section.ContainerItem.infer;
 
-export const Instruction = Companion("Instruction", type({
-  kind: "'instruction'",
-  id: RecipeItemId.type,
-  equipment_id: EquipmentId.type,
-  instruction: "string",
-  "duration_seconds?": "number",
-  "notes?": "string",
-}));
-export type Instruction = typeof Instruction.type.infer;
+export const TextBlock = Companion("TextBlock", section.TextBlock);
+export type TextBlock = typeof section.TextBlock.infer;
 
-export const RecipeItem = Companion("RecipeItem", type.or(
-  IngredientItem.type,
-  ContainerItem.type,
-  SectionHeader.type,
-  TextBlock.type,
-  Instruction.type,
-));
-export type RecipeItem = typeof RecipeItem.type.infer;
+export const Instruction = Companion("Instruction", section.Instruction);
+export type Instruction = typeof section.Instruction.infer;
 
-export const RecipeItemKind = EnumCompanion("RecipeItemKind", [
-  "ingredient_item",
-  "container_item",
-  "section_label",
-  "instruction_block",
-  "equipment_instruction",
-]);
-export type RecipeItemKind = typeof RecipeItemKind.type.infer;
+export const Section = Companion("Section", section.Section);
+export type Section = typeof section.Section.infer;
+
+export const SectionItem = Companion("SectionItem", section.SectionItem) satisfies AnyCompanion<{ kind: SectionItemKind }>;
+export type SectionItem = typeof section.SectionItem.infer;
 
 export const RecipeVersionId = IdCompanion("RecipeVersionId", 12);
 export type RecipeVersionId = typeof RecipeVersionId.type.infer;
@@ -78,7 +84,7 @@ export type RecipeVersionId = typeof RecipeVersionId.type.infer;
 export const RecipeVersion = Companion("RecipeVersion", type({
   id: RecipeVersionId.type,
   recipe_id: RecipeId.type,
-  items: RecipeItem.type.array(),
+  sections: Section.type.array(),
   created_at: "number",
 }));
 export type RecipeVersion = typeof RecipeVersion.type.infer;
@@ -94,22 +100,22 @@ export const Recipe = Companion("Recipe", type({
 }));
 export type Recipe = typeof Recipe.type.infer;
 
-export function is_ingredient_item(item: RecipeItem): item is IngredientItem {
+export function is_ingredient_item(item: SectionItem): item is IngredientItem {
   return item.kind === "ingredient";
 }
 
-export function is_container_item(item: RecipeItem): item is ContainerItem {
+export function is_container_item(item: SectionItem): item is ContainerItem {
   return item.kind === "container";
 }
 
-export function is_section_header(item: RecipeItem): item is SectionHeader {
-  return item.kind === "section_header";
-}
-
-export function is_text_block(item: RecipeItem): item is TextBlock {
+export function is_text_block(item: SectionItem): item is TextBlock {
   return item.kind === "text_block";
 }
 
-export function is_instruction(item: RecipeItem): item is Instruction {
+export function is_instruction(item: SectionItem): item is Instruction {
   return item.kind === "instruction";
+}
+
+export function is_section(item: SectionItem): item is Section {
+  return item.kind === "section";
 }

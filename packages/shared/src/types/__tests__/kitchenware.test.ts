@@ -1,6 +1,6 @@
 import { type } from "arktype";
 import { describe, expect, it } from "vitest";
-import { pad_right } from "../ids.js";
+import { padded_id } from "../ids.js";
 import {
   Container,
   ContainerId,
@@ -75,7 +75,7 @@ describe("Kitchenware constructors", () => {
   it("Ingredient accepts a valid ingredient", () => {
     const result = Ingredient({
       kind: "ingredient",
-      id: pad_right("butter", IngredientId.length),
+      id: padded_id(IngredientId, "butter"),
       name: "Butter",
       default_measurement_type: "volume",
       labels: [],
@@ -105,7 +105,7 @@ describe("Kitchenware constructors", () => {
   });
 
   it("Equipment accepts a valid equipment", () => {
-    const result = Equipment({ kind: "equipment", id: pad_right("oven", EquipmentId.length), name: "Oven", labels: new Set() });
+    const result = Equipment({ kind: "equipment", id: padded_id(EquipmentId, "oven"), name: "Oven", labels: new Set() });
     expect(result instanceof type.errors).toBe(false);
   });
 });

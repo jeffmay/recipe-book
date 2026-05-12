@@ -129,17 +129,19 @@ An "active session" is a started recipe run:
 
 ### Recipe Editor
 - Edit name and description
+- Add sections with an optional header
 - Add/edit ingredients (with measurement editor)
 - Add/edit containers (bowl, steamer, pot, foil) containing nested ingredients
 - Add/edit equipment instructions (bake 20 min, sear on high, mix 20 min, etc.)
-- Add section labels to bulk-group ingredients/containers
-- Auto-grouping by liquid vs. solid
-- Insert paragraph-length instruction blocks between items
-- Attach notes to ingredients or instructions
+- Add/edit text blocks
+- Add/edit sub-sections
+- Attach notes to any sections or section items
+- Auto-grouping ingredients (ex: group by label - solid or liquid)
+- Save as a new version
 - View past versions (version history)
-- Clone and name a new recipe
+- Clone and rename recipe
 - View session log
-- Choose a parent group
+- Move to a parent group ("organize")
 
 ### Active Session View
 - Ingredients and containers as checkboxes (nested for containers)
