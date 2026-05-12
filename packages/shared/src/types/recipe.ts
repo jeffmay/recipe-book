@@ -4,12 +4,27 @@ import { EnumCompanion } from "./enums.js";
 import { IdCompanion } from "./ids.js";
 import { ContainerId, EquipmentId, IngredientId } from "./kitchenware.js";
 import { Measurement } from "./measurement.js";
+import { RecipeFolderId } from "./recipe_group.js";
 
 export const RecipeId = IdCompanion("RecipeId", 12);
 export type RecipeId = typeof RecipeId.type.infer;
 
 export const SectionItemId = IdCompanion("SectionItemId", 12);
 export type SectionItemId = typeof SectionItemId.type.infer;
+
+export const RecipeIngredientId = IdCompanion("RecipeIngredientId", 12);
+export type RecipeIngredientId = typeof RecipeIngredientId.type.infer;
+
+export const RecipeIngredient = Companion("RecipeIngredient", type({
+  id: RecipeIngredientId.type,
+  ingredient_id: IngredientId.type,
+  "amount?": Measurement,
+}));
+export interface RecipeIngredient {
+  id: RecipeIngredientId;
+  ingredient_id: IngredientId;
+  amount?: Measurement;
+}
 
 // Use scope syntax to allow recursive definitions
 const section = type.scope({
@@ -21,12 +36,14 @@ const section = type.scope({
     "...": "BaseSectionItem",
     kind: "'ingredient'",
     ingredient_id: IngredientId.type,
-    quantity: Measurement,
+    "amount?": Measurement,
   },
   ContainerItem: {
     "...": "BaseSectionItem",
     kind: "'container'",
     container_id: ContainerId.type,
+    descriptor: "string",
+    "ordered?": "boolean",
     contents: "IngredientItem[]",
   },
   TextBlock: {
@@ -39,7 +56,7 @@ const section = type.scope({
     kind: "'instruction'",
     instruction: "string", // ex: chop, mix, blend, stir, bake, fry, etc...
     "equipment_id?": () => EquipmentId.type,
-    "items?": () => SectionItemId.type.array(),
+    "ingredient_ids?": () => IngredientId.type.array(),
     "duration_seconds?": "number",
   },
   Section: {
@@ -84,21 +101,42 @@ export type RecipeVersionId = typeof RecipeVersionId.type.infer;
 export const RecipeVersion = Companion("RecipeVersion", type({
   id: RecipeVersionId.type,
   recipe_id: RecipeId.type,
+  description: "string",
+  ingredients: RecipeIngredient.type.array(),
   sections: Section.type.array(),
   created_at: "number",
+  created_by: "string",
 }));
-export type RecipeVersion = typeof RecipeVersion.type.infer;
+export interface RecipeVersion {
+  id: RecipeVersionId;
+  recipe_id: RecipeId;
+  description: string;
+  ingredients: RecipeIngredient[];
+  sections: Section[];
+  created_at: number;
+  created_by: string;
+}
 
 export const Recipe = Companion("Recipe", type({
   id: RecipeId.type,
-  name: "string",
-  description: "string",
-  "parent_group_id?": "string",
+  title: "string",
+  "subtitle?": "string",
+  "source_url?": "string.url",
+  "parent_folder_id?": RecipeFolderId.type,
   versions: RecipeVersion.type.array(),
   created_at: "number",
   updated_at: "number",
 }));
-export type Recipe = typeof Recipe.type.infer;
+export interface Recipe {
+  id: RecipeId;
+  title: string;
+  subtitle?: string;
+  source_url?: string;
+  parent_folder_id?: RecipeFolderId;
+  versions: RecipeVersion[];
+  created_at: number;
+  updated_at: number;
+}
 
 export function is_ingredient_item(item: SectionItem): item is IngredientItem {
   return item.kind === "ingredient";

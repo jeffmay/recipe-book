@@ -1,6 +1,6 @@
 import "./NavMenu.css";
 
-type NavPage = "bulk_ingredient_editor";
+type NavPage = "bulk_ingredient_editor" | "recipe_editor";
 
 interface NavMenuProps {
   readonly on_navigate: (page: NavPage) => void;
@@ -13,6 +13,12 @@ export function NavMenu({ on_navigate }: NavMenuProps) {
         ☰
       </summary>
       <nav className="nav-menu-dropdown" aria-label="Main navigation">
+        <button
+          className="nav-menu-item"
+          onClick={() => on_navigate("recipe_editor")}
+        >
+          Recipes
+        </button>
         <button
           className="nav-menu-item"
           onClick={() => on_navigate("bulk_ingredient_editor")}

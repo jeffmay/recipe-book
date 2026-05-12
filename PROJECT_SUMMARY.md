@@ -67,25 +67,34 @@ Labels are stored in the `"labels"` Yjs map on the document root. Deleting a lab
 
 ### Recipe
 
-- `id`: string
-- `name`: string (non-unique)
-- `description`: string
-- `parent_group_id?`: string
-- `versions`: RecipeVersion[] (append-only)
+- `id`: `RecipeId` (branded nanoid, 12 chars)
+- `title`: string
+- `subtitle?`: string
+- `source_url?`: string (URL format)
+- `parent_folder_id?`: `RecipeFolderId`
+- `versions`: `RecipeVersion[]` (append-only)
 - `created_at`: timestamp
 - `updated_at`: timestamp
 
 #### RecipeVersion
-A snapshot of a recipe's ingredients, containers, and instructions at a point in time.
+A snapshot of a recipe's ingredients and sections at a point in time.
 
-- `id`: string
-- `recipe_id`: string
-- `items`: RecipeItem[] — ordered list of:
-  - `IngredientItem` — ingredient ref, quantity (Measurement), notes
-  - `ContainerItem` — container ref, nested IngredientItems, notes
-  - `SectionLabel` — groups following items by label (liquid, solid, etc.)
-  - `InstructionBlock` — paragraph-length text (placed between ingredients)
-  - `EquipmentInstruction` — equipment ref + instruction text (bake 20 min, etc.)
+- `id`: `RecipeVersionId` (branded nanoid, 12 chars)
+- `recipe_id`: `RecipeId`
+- `description`: string (e.g. "Untested" or "Final Version")
+- `ingredients`: `RecipeIngredient[]` — top-level ingredient list (ingredient_id + optional Measurement)
+- `sections`: `Section[]` — ordered list of sections containing `SectionItem`s
+- `created_at`: timestamp
+- `created_by`: string
+
+#### SectionItem (recursive)
+
+Sections contain `SectionItem[]`. Each item is one of:
+  - `IngredientItem` — ingredient ref, optional `amount` (Measurement), notes
+  - `ContainerItem` — container ref, `descriptor`, optional `ordered`, nested `IngredientItem[]`, notes
+  - `TextBlock` — freeform text, notes
+  - `Instruction` — instruction verb (mix/bake/stir), optional `equipment_id`, optional `ingredient_ids[]`, optional `duration_seconds`, notes
+  - `Section` — nested section with optional `header` and recursive `contents`
 
 ### Measurement
 
@@ -110,14 +119,19 @@ An "active session" is a started recipe run:
 - `rating?: number` (0–10, shown as 0–5 stars)
 - `session_notes?: string`
 
-### Recipe Group
+### Recipe Folder (formerly RecipeGroup)
 
-- `id`: string
+Recursive tree structure for organizing recipes. Stored flat in `"recipe_folders"` Yjs map; tree built in-memory via `parent_folder_id` links.
+
+- `id`: `RecipeFolderId` (branded nanoid, 12 chars)
 - `name`: string
-- `parent_group_id?`: string
+- `parent_folder_id?`: `RecipeFolderId` (supports arbitrary nesting)
 - `tags`: string[]
 - `sort_order`: `"last_modified" | "created" | "alphabetical" | "manual"`
-- `manual_order?`: string[] (recipe/group ids)
+- `manual_order?`: string[] (recipe/folder ids)
+- `children?`: `RecipeFolder[]` (computed, not stored)
+
+> Backward-compat aliases: `RecipeGroupId = RecipeFolderId`, `RecipeGroup = RecipeFolder`.
 
 ---
 
@@ -255,6 +269,13 @@ npm run lint
 - [x] `LabelEditor` bug fixes — `menuPlacement="auto"` prevents bottom cutoff; custom `LabelEditorMenu` component intercepts non-left-click mousedown to prevent right-click closing the dropdown; hover color updated to `#ebebeb`, active to `#c4c4c4`; bulk add/remove label actions in `IngredientsTable` now use `LabelEditor` instead of plain text inputs
 - [x] `FractionEditor` component — inline fraction display (`integer<sup>num</sup>⁄<sub>denom</sub>` with aria-label); ± opens editor (replaced by <); < resets to pre-edit value (keeps editor open); ÷/×/−/+ radio buttons switch operation rows; op buttons apply math (simplified after each); `extra_controls` slot between op buttons and OK; 20 component tests
 - [x] `MeasurementEditor` component — same editing UX as FractionEditor sharing `FractionDisplay`, `OP_ROWS`, `OP_MODES`; adds type selector (volume/weight/count) and unit selector with US/metric optgroups; unit change converts fraction within same system (cross-system keeps value unchanged); OK converts to largest whole-number unit before committing; 20 component tests
+- [x] `RecipeFolder` type — recursive ArkType scope; replaces flat `RecipeGroup`; `recipe_folder_store.ts` stores flat, builds tree via `build_folder_tree()`; backward-compat aliases exported
+- [x] `Recipe` type overhaul — `RecipeId`, `RecipeVersionId`, `RecipeIngredientId` branded IDs; `RecipeIngredient` (id + ingredient_id + optional amount); `RecipeVersion` with `ingredients[]`, `sections[]`, `created_by`; `Recipe` with `title`, `subtitle?`, `source_url?`, `parent_folder_id?`; explicit TypeScript interfaces ensure branded-ID types survive cross-package inference
+- [x] `recipe_store.ts` Yjs store — CRUD for recipes with structural validators; `create_recipe`, `save_recipe` (in-place or new version), `copy_recipe`, `delete_recipe`; all optional fields use conditional spread for `exactOptionalPropertyTypes` compatibility
+- [x] `DurationEditor` component — text input with humanized display (`humanize-duration`), min/sec unit toggle, ±delta buttons (−5/−1/+1/+5 min or −15/−5/+5/+15 sec), revert `<` and commit `OK`; parse input via `parse-duration`; 24 component tests
+- [x] `RecipeEditorPage` — full recipe CRUD UI; list view with `+ New recipe`; editor with title/subtitle/source URL/folder/version-description fields; top-level `RecipeIngredientsEditor`; `SectionEditor` (recursive, depth 1–5) with add/remove/edit for instruction/text-block/ingredient/container/sub-section items; version history table; `CopyRecipeDialog`; `DurationEditor` per instruction; `MeasurementEditor` per ingredient; NavMenu wired; 33 component tests
+- [x] `use_recipe_store` and `use_recipe_folder_store` React hooks — Yjs-reactive stores for recipes and folders
+- [x] ESLint config updated — `varsIgnorePattern: "^_"` and `ignoreRestSiblings: true` for destructure-discard patterns
 
 ---
 

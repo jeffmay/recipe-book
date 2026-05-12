@@ -14,6 +14,8 @@ import {
   SectionItemId,
   type Section,
   type TextBlock,
+  RecipeIngredient,
+  RecipeIngredientId,
 } from "../recipe.js";
 
 describe("recipe item type guards", () => {
@@ -21,13 +23,14 @@ describe("recipe item type guards", () => {
     kind: "ingredient",
     id: padded_id(SectionItemId, "item-1"),
     ingredient_id: padded_id(IngredientId, "butter"),
-    quantity: { value: { numerator: 1, denominator: 2 }, unit: "cup" },
+    amount: { value: { numerator: 1, denominator: 2 }, unit: "cup" },
   };
 
   const container_item: ContainerItem = {
     kind: "container",
     id: padded_id(SectionItemId, "item-2"),
     container_id: padded_id(ContainerId, "bowl"),
+    descriptor: "large",
     contents: [],
   };
 
@@ -78,5 +81,101 @@ describe("recipe item type guards", () => {
 
   it("is_equipment_instruction identifies only equipment instructions", () => {
     expect(all_items.filter(is_instruction)).toEqual([instruction]);
+  });
+});
+
+describe("IngredientItem", () => {
+  it("accepts an item without amount", () => {
+    const item: IngredientItem = {
+      kind: "ingredient",
+      id: padded_id(SectionItemId, "item-1"),
+      ingredient_id: padded_id(IngredientId, "butter"),
+    };
+    expect(item.amount).toBeUndefined();
+  });
+
+  it("accepts an item with notes", () => {
+    const item: IngredientItem = {
+      kind: "ingredient",
+      id: padded_id(SectionItemId, "item-1"),
+      ingredient_id: padded_id(IngredientId, "butter"),
+      notes: ["add more to taste", "better at room temp"],
+    };
+    expect(item.notes).toHaveLength(2);
+  });
+});
+
+describe("ContainerItem", () => {
+  it("requires a descriptor", () => {
+    const item: ContainerItem = {
+      kind: "container",
+      id: padded_id(SectionItemId, "item-2"),
+      container_id: padded_id(ContainerId, "bowl"),
+      descriptor: "wet ingredients",
+      contents: [],
+    };
+    expect(item.descriptor).toBe("wet ingredients");
+  });
+
+  it("accepts an ordered container", () => {
+    const item: ContainerItem = {
+      kind: "container",
+      id: padded_id(SectionItemId, "item-2"),
+      container_id: padded_id(ContainerId, "bowl"),
+      descriptor: "large",
+      ordered: true,
+      contents: [],
+    };
+    expect(item.ordered).toBe(true);
+  });
+});
+
+describe("Instruction", () => {
+  it("accepts ingredient_ids for referenced ingredients", () => {
+    const instr: Instruction = {
+      kind: "instruction",
+      id: padded_id(SectionItemId, "item-5"),
+      instruction: "Mix together",
+      ingredient_ids: [padded_id(IngredientId, "butter"), padded_id(IngredientId, "flour")],
+    };
+    expect(instr.ingredient_ids).toHaveLength(2);
+  });
+
+  it("accepts a duration in seconds", () => {
+    const instr: Instruction = {
+      kind: "instruction",
+      id: padded_id(SectionItemId, "item-5"),
+      instruction: "Bake",
+      duration_seconds: 1800,
+    };
+    expect(instr.duration_seconds).toBe(1800);
+  });
+});
+
+describe("RecipeIngredient", () => {
+  it("accepts an ingredient without amount", () => {
+    const ri: RecipeIngredient = {
+      id: padded_id(RecipeIngredientId, "ri-1"),
+      ingredient_id: padded_id(IngredientId, "butter"),
+    };
+    expect(ri.amount).toBeUndefined();
+  });
+
+  it("accepts an ingredient with an amount", () => {
+    const ri: RecipeIngredient = {
+      id: padded_id(RecipeIngredientId, "ri-1"),
+      ingredient_id: padded_id(IngredientId, "butter"),
+      amount: { value: { numerator: 1, denominator: 2 }, unit: "cup" },
+    };
+    expect(ri.amount?.unit).toBe("cup");
+  });
+
+  it("validates via ArkType companion", () => {
+    const ri = {
+      id: padded_id(RecipeIngredientId, "ri-1"),
+      ingredient_id: padded_id(IngredientId, "butter"),
+    };
+    const result = RecipeIngredient.type(ri);
+    expect(result instanceof Error).toBe(false);
   });
 });

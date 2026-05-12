@@ -7,8 +7,9 @@ import { UserMenu } from "./components/UserMenu.js";
 import { SelectUserPage } from "./pages/SelectUserPage.js";
 import { ProfileSettingsPage } from "./pages/ProfileSettingsPage.js";
 import { BulkIngredientEditorPage } from "./pages/BulkIngredientEditorPage.js";
+import { RecipeEditorPage } from "./pages/RecipeEditorPage.js";
 
-type Route = "home" | "profile_settings" | "bulk_ingredient_editor";
+type Route = "home" | "profile_settings" | "bulk_ingredient_editor" | "recipe_editor";
 
 interface AppContentProps {
   readonly user_name: string;
@@ -47,6 +48,8 @@ function AppContent({ user_name, on_rename }: AppContentProps) {
           />
         ) : route === "bulk_ingredient_editor" ? (
           <BulkIngredientEditorPage />
+        ) : route === "recipe_editor" ? (
+          <RecipeEditorPage user_name={user_name} />
         ) : (
           <main className="page-content">
             <p className="placeholder">Your recipes will appear here.</p>

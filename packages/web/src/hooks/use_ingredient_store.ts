@@ -16,7 +16,7 @@ import {
   set_measurement_type_for_ingredients,
   set_parent_for_ingredients,
 } from "@recipe-book/shared";
-import { random_id } from "@recipe-book/shared/src/types/ids.js";
+import { random_id } from "@recipe-book/shared";
 import { useEffect, useState } from "react";
 import { use_doc } from "../contexts/doc_context.js";
 
