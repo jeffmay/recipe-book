@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { USER_STORAGE_KEY } from "../hooks/use_user.js";
+import { USER_STORAGE_KEY } from "../hooks/useUser.js";
 
 vi.mock("y-indexeddb", () => ({
   IndexeddbPersistence: vi.fn().mockImplementation(() => ({ destroy: vi.fn() })),
 }));
 
-const { App } = await import("../app.js");
+const { App } = await import("../App.js");
 
 beforeEach(() => {
   localStorage.clear();

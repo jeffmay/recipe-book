@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { makeFraction, simplify } from "@recipe-book/shared";
-import { FractionEditor } from "../fraction_editor.js";
+import { FractionEditor } from "../FractionEditor.js";
 
 const ONE_HALF = makeFraction(1, 2);
 const ONE = makeFraction(1, 1);

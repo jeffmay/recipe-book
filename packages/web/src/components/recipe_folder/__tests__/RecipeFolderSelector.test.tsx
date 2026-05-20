@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
 import type { TreeNode } from "primereact/treenode";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { RecipeFolderSelector } from "../recipe_folder_selector.js";
+import { RecipeFolderSelector } from "../RecipeFolderSelector.js";
 
 interface MockTreeSelectProps {
   value: string | null | undefined;

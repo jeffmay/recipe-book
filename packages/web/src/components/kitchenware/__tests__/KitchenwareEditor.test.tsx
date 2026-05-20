@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
 import type { TreeNode } from "primereact/treenode";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { KitchenwareEditor } from "../kitchenware_editor.js";
+import { KitchenwareEditor } from "../KitchenwareEditor.js";
 
 interface MockTreeSelectProps {
   value: string | null | undefined;

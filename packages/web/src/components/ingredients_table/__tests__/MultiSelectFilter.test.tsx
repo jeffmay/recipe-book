@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
-import { MultiSelectFilter } from "../multi_select_filter.js";
+import { MultiSelectFilter } from "../MultiSelectFilter.js";
 
 const OPTIONS = ["dairy", "fat", "solid", "liquid"];
 

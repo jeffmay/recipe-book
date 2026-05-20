@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
-import { ProfileSettingsPage } from "../profile_settings_page.js";
+import { ProfileSettingsPage } from "../ProfileSettingsPage.js";
 
 describe("ProfileSettingsPage", () => {
   it("renders current name in the input", () => {

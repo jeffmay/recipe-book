@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 import type { TreeNode } from "primereact/treenode";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { IngredientsTable } from "../ingredients_table.js";
+import { IngredientsTable } from "../IngredientsTable.js";
 
 interface MockTreeSelectProps {
   value: string | null | undefined;

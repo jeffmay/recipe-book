@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
-import { SelectUserPage } from "../select_user_page.js";
+import { SelectUserPage } from "../SelectUserPage.js";
 
 describe("SelectUserPage", () => {
   it("renders the title, subtitle, and form", () => {

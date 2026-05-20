@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
-import { UserMenu } from "../user_menu.js";
+import { UserMenu } from "../UserMenu.js";
 
 describe("UserMenu", () => {
   it("renders the user name in the trigger", () => {
