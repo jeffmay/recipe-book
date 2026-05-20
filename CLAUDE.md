@@ -39,6 +39,7 @@ The app is running at http://localhost:5173, and you can use the Playwright MCP 
 - MUST ALWAYS use responsive design to ensure that the elements never require horizontal scrolling, while maximizing use of horizontal space for mobile device, tablet, laptop, and wide screens.
 - MUST ALWAYS use CSS over JavaScript for styling elements.
 - MUST ALWAYS use `vw` units unless the element is a horizontal line or when creating a font-size that is relative to a sibling or parent element, in which case, `em` is fine.
+- MUST ALWAYS use camelCase for React component props, local variables, and constant references. Keep snake_case for all fields stored in Yjs documents, and any string values such as discriminator fields (e.g. `"measurement_type"`).
 
 ## Architecture
 
@@ -264,11 +265,14 @@ Recursive tree structure for organizing recipes. Stored flat in `"recipe_folders
 ### Naming Conventions
 
 | Category | Convention | Examples |
-|---|---|---|
+|---|---|---|---|
 | Components, classes, enums | TitleCase | `RecipeEditorPage`, `SectionItem`, `SortOrder` |
 | Functions (hooks, handlers, utilities) | camelCase | `useRecipeStore`, `handleSave`, `buildFolderTree` |
-| Object / interface fields | snake_case | `recipe_id`, `created_at`, `parent_folder_id` |
+| React component props | camelCase | `onChange`, `onSave`, `onCancel`, `initiallyOpen` |
+| Local variables, constants | camelCase | `currentValue`, `filteredItems`, `DEFAULT_MEASUREMENT_BY_TYPE` |
+| Object / interface fields (Yjs-backed) | snake_case | `recipe_id`, `created_at`, `parent_folder_id` |
 | Yjs map keys, file names, CSS classes | snake_case | `"recipe_folders"`, `recipe_store.ts`, `.re-editor` |
+| String discriminator values (enum) | snake_case | `"measurement_type"`, `"ingredient_item"`, `"volume"` |
 
 Run order before every commit:
 ```
