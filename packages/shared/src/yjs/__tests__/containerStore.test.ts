@@ -98,9 +98,7 @@ describe("setLabelsForContainer", () => {
   });
 
   it("silently skips unknown ids", () => {
-    expect(() =>
-      setLabelsForContainer(doc, paddedId(ContainerId, "unk"), [LABEL_A]),
-    ).not.toThrow();
+    expect(() => setLabelsForContainer(doc, paddedId(ContainerId, "unk"), [LABEL_A])).not.toThrow();
   });
 });
 

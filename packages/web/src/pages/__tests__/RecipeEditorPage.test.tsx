@@ -21,10 +21,7 @@ let doc: Y.Doc;
 
 beforeEach(() => {
   doc = new Y.Doc();
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }),
-  );
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }));
 });
 
 afterEach(() => {
@@ -130,7 +127,9 @@ describe("RecipeEditorPage — editing existing recipe", () => {
 
   it("shows the 'Create a new version' checkbox when editing", async () => {
     await create_and_edit("Banana Bread");
-    expect(screen.getByRole("checkbox", { name: "Create a new version from changes" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: "Create a new version from changes" }),
+    ).toBeInTheDocument();
   });
 
   it("shows Copy recipe button when editing", async () => {
@@ -211,7 +210,9 @@ describe("RecipeEditorPage — copy recipe", () => {
     await userEvent.click(screen.getByRole("button", { name: "Edit recipe: Soup" }));
     await userEvent.click(screen.getByRole("button", { name: "Copy recipe" }));
     const dialog = screen.getByRole("dialog", { name: "Copy recipe" });
-    expect(within(dialog).getByRole("textbox", { name: "New recipe title" })).toHaveValue("Soup (copy)");
+    expect(within(dialog).getByRole("textbox", { name: "New recipe title" })).toHaveValue(
+      "Soup (copy)",
+    );
   });
 
   it("cancel closes the copy dialog", async () => {

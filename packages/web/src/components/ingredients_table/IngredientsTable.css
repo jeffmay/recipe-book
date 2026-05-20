@@ -29,7 +29,7 @@
 }
 
 /* Header cells */
-.it-wrapper .p_treetable .p_treetable_thead>tr>th {
+.it-wrapper .p_treetable .p_treetable_thead > tr > th {
   border: 1px solid var(--color-border);
   background: var(--color-fg);
   color: var(--color-bg);
@@ -63,7 +63,7 @@
 }
 
 /* Body cells */
-.it-wrapper .p_treetable .p_treetable_tbody>tr>td {
+.it-wrapper .p_treetable .p_treetable_tbody > tr > td {
   border: 1px solid var(--color-border);
   padding: var(--spacing-xs) var(--spacing-sm);
   font-family: var(--font-body);
@@ -71,18 +71,18 @@
 }
 
 /* Row hover */
-.it-wrapper .p_treetable .p_treetable_tbody>tr:hover>td {
+.it-wrapper .p_treetable .p_treetable_tbody > tr:hover > td {
   background: #f8f8f8;
 }
 
 /* Selected rows */
-.it-wrapper .p_treetable .p_treetable_tbody>tr.p_highlight>td {
+.it-wrapper .p_treetable .p_treetable_tbody > tr.p_highlight > td {
   background: #f0f0f0 !important;
   color: var(--color-fg) !important;
 }
 
 /* Empty message */
-.it-wrapper .p_treetable .p_treetable_emptymessage>td {
+.it-wrapper .p_treetable .p_treetable_emptymessage > td {
   text-align: center;
   color: var(--color-muted);
   font-style: italic;
@@ -99,7 +99,7 @@
   background: var(--color-bg);
 }
 
-.p_checkbox_box>svg>path {
+.p_checkbox_box > svg > path {
   color: var(--color-fg);
 }
 
@@ -178,7 +178,7 @@
 
 /* ---- Editable cells ---- */
 .it-editable {
-  margin-left: .5em;
+  margin-left: 0.5em;
   cursor: pointer;
   display: inline;
   min-width: 4em;
@@ -190,7 +190,7 @@
 }
 
 .it-editing {
-  margin-left: .5em;
+  margin-left: 0.5em;
   display: inline-flex;
   gap: 2px;
 }
@@ -207,7 +207,7 @@
 
 .it-confirm-btn,
 .it-cancel-btn {
-  padding: 2px .5em;
+  padding: 2px 0.5em;
   border: var(--border-width) solid var(--color-border);
   background: var(--color-bg);
   color: var(--color-fg);
@@ -304,7 +304,7 @@
   width: 100%;
 }
 
-.it-label-editor> :first-child {
+.it-label-editor > :first-child {
   flex: 1;
   min-width: 10vw;
 }

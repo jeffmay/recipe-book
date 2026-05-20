@@ -110,9 +110,11 @@ describe("removeLabelsFromIngredients", () => {
   it("ignores labels not present on ingredient", () => {
     addIngredient(doc, BUTTER);
     expect(() =>
-      removeLabelsFromIngredients(doc, ["butter" as IngredientId], [
-        "nonexist" as KitchenwareLabelId,
-      ]),
+      removeLabelsFromIngredients(
+        doc,
+        ["butter" as IngredientId],
+        ["nonexist" as KitchenwareLabelId],
+      ),
     ).not.toThrow();
   });
 });

@@ -39,9 +39,9 @@ const LabelNames = type("string").pipe((s) =>
 
 const IngredientRow = type({
   "Unique ID": "string",
-  "Description": "string",
+  Description: "string",
   "Default Measurement Type": MeasurementType.type,
-  "Labels": LabelNames,
+  Labels: LabelNames,
 }).pipe(
   (row): IngredientTemplate => ({
     kind: "ingredient",
@@ -54,8 +54,8 @@ const IngredientRow = type({
 
 const ContainerRow = type({
   "Unique ID": "string",
-  "Description": "string",
-  "Labels": LabelNames,
+  Description: "string",
+  Labels: LabelNames,
 }).pipe(
   (row): ContainerTemplate => ({
     kind: "container",
@@ -67,8 +67,8 @@ const ContainerRow = type({
 
 const EquipmentRow = type({
   "Unique ID": "string",
-  "Description": "string",
-  "Labels": LabelNames,
+  Description: "string",
+  Labels: LabelNames,
 }).pipe(
   (row): EquipmentTemplate => ({
     kind: "equipment",

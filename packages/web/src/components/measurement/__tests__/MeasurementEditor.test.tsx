@@ -104,19 +104,28 @@ describe("MeasurementEditor — operation buttons", () => {
 describe("MeasurementEditor — type selector", () => {
   it("switching type to weight updates unit selector to oz", async () => {
     await openEditor(ONE_CUP);
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Measurement type" }), "weight");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Measurement type" }),
+      "weight",
+    );
     expect(screen.getByRole("combobox", { name: "Measurement unit" })).toHaveValue("oz");
   });
 
   it("switching type to count updates unit selector to whole", async () => {
     await openEditor(ONE_CUP);
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Measurement type" }), "count");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Measurement type" }),
+      "count",
+    );
     expect(screen.getByRole("combobox", { name: "Measurement unit" })).toHaveValue("whole");
   });
 
   it("switching type to count shows count unit options", async () => {
     await openEditor(ONE_CUP);
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Measurement type" }), "count");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Measurement type" }),
+      "count",
+    );
     const unit_select = screen.getByRole("combobox", { name: "Measurement unit" });
     expect(unit_select).toContainElement(screen.getByRole("option", { name: "whole" }));
     expect(unit_select).toContainElement(screen.getByRole("option", { name: "pinch" }));
@@ -127,7 +136,10 @@ describe("MeasurementEditor — type selector", () => {
 describe("MeasurementEditor — unit selector conversion", () => {
   it("switching from cup to tsp converts the fraction (1 cup → 48 tsp)", async () => {
     await openEditor(ONE_CUP);
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Measurement unit" }), "tsp");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Measurement unit" }),
+      "tsp",
+    );
     expect(screen.getByLabelText("48")).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Measurement unit" })).toHaveValue("tsp");
   });
@@ -150,12 +162,13 @@ describe("MeasurementEditor — unit selector conversion", () => {
 describe("MeasurementEditor — OK with best unit conversion", () => {
   it("OK on 48 tsp converts to 1 cup", async () => {
     const { onCommit } = await openEditor(ONE_CUP);
-    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Measurement unit" }), "tsp");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Measurement unit" }),
+      "tsp",
+    );
     // now at 48 tsp; largest whole unit for 48 tsp is cup (48/48 = 1)
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
-    expect(onCommit).toHaveBeenCalledWith(
-      expect.objectContaining({ unit: "cup" }),
-    );
+    expect(onCommit).toHaveBeenCalledWith(expect.objectContaining({ unit: "cup" }));
     expect(onCommit).toHaveBeenCalledWith(
       expect.objectContaining({ value: expect.objectContaining({ numerator: 1, denominator: 1 }) }),
     );
@@ -164,9 +177,7 @@ describe("MeasurementEditor — OK with best unit conversion", () => {
   it("OK on 1 cup stays as 1 cup (already at best unit)", async () => {
     const { onCommit } = await openEditor(ONE_CUP);
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
-    expect(onCommit).toHaveBeenCalledWith(
-      expect.objectContaining({ unit: "cup" }),
-    );
+    expect(onCommit).toHaveBeenCalledWith(expect.objectContaining({ unit: "cup" }));
   });
 
   it("OK closes the editor", async () => {
@@ -193,16 +204,17 @@ describe("MeasurementEditor — OK with best unit conversion", () => {
     // now 16 oz = 1 lb
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
     expect(onCommit).toHaveBeenCalledWith(
-      expect.objectContaining({ unit: "lb", value: expect.objectContaining({ numerator: 1, denominator: 1 }) }),
+      expect.objectContaining({
+        unit: "lb",
+        value: expect.objectContaining({ numerator: 1, denominator: 1 }),
+      }),
     );
   });
 
   it("OK on count value passes through unchanged", async () => {
     const { onCommit } = await openEditor(WHOLE);
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
-    expect(onCommit).toHaveBeenCalledWith(
-      expect.objectContaining({ unit: "whole" }),
-    );
+    expect(onCommit).toHaveBeenCalledWith(expect.objectContaining({ unit: "whole" }));
   });
 
   it("fractional cup value on OK converts to fl_oz (1/2 cup = 4 fl_oz)", async () => {
@@ -210,7 +222,10 @@ describe("MeasurementEditor — OK with best unit conversion", () => {
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
     // 1/2 cup → largest whole unit: fl_oz (4 fl_oz, larger than 24 tsp or 8 tbsp)
     expect(onCommit).toHaveBeenCalledWith(
-      expect.objectContaining({ unit: "fl_oz", value: expect.objectContaining({ numerator: 4, denominator: 1 }) }),
+      expect.objectContaining({
+        unit: "fl_oz",
+        value: expect.objectContaining({ numerator: 4, denominator: 1 }),
+      }),
     );
   });
 });

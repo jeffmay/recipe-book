@@ -51,27 +51,19 @@ describe("simplify", () => {
 
 describe("arithmetic", () => {
   it("adds fractions", () => {
-    expect(addFractions(makeFraction(1, 2), makeFraction(1, 3))).toEqual(
-      makeFraction(5, 6),
-    );
+    expect(addFractions(makeFraction(1, 2), makeFraction(1, 3))).toEqual(makeFraction(5, 6));
   });
 
   it("subtracts fractions", () => {
-    expect(subtractFractions(makeFraction(3, 4), makeFraction(1, 4))).toEqual(
-      makeFraction(1, 2),
-    );
+    expect(subtractFractions(makeFraction(3, 4), makeFraction(1, 4))).toEqual(makeFraction(1, 2));
   });
 
   it("multiplies fractions", () => {
-    expect(multiplyFractions(makeFraction(2, 3), makeFraction(3, 4))).toEqual(
-      makeFraction(1, 2),
-    );
+    expect(multiplyFractions(makeFraction(2, 3), makeFraction(3, 4))).toEqual(makeFraction(1, 2));
   });
 
   it("divides fractions", () => {
-    expect(divideFractions(makeFraction(1, 2), makeFraction(1, 4))).toEqual(
-      makeFraction(2, 1),
-    );
+    expect(divideFractions(makeFraction(1, 2), makeFraction(1, 4))).toEqual(makeFraction(2, 1));
   });
 
   it("throws when dividing by zero", () => {

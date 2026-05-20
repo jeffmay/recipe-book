@@ -1,4 +1,10 @@
-import type { Ingredient, IngredientId, KitchenwareKind, KitchenwareLabel, KitchenwareLabelId } from "@recipe-book/shared";
+import type {
+  Ingredient,
+  IngredientId,
+  KitchenwareKind,
+  KitchenwareLabel,
+  KitchenwareLabelId,
+} from "@recipe-book/shared";
 import { describe, expect, it } from "vitest";
 import { buildIngredientTree } from "../buildIngredientTree.js";
 import { ReadonlyDeep } from "type-fest";
@@ -25,7 +31,12 @@ const BAKING_LABEL: ReadonlyDeep<KitchenwareLabel> = {
   kinds: new Set<KitchenwareKind>(["ingredient"]),
 };
 
-const ALL_LABELS: ReadonlyDeep<KitchenwareLabel[]> = [FAT_LABEL, SOLID_LABEL, LIQUID_LABEL, BAKING_LABEL];
+const ALL_LABELS: ReadonlyDeep<KitchenwareLabel[]> = [
+  FAT_LABEL,
+  SOLID_LABEL,
+  LIQUID_LABEL,
+  BAKING_LABEL,
+];
 
 // Ingredient fixtures
 const DAIRY: ReadonlyDeep<Ingredient> = {
@@ -125,7 +136,10 @@ describe("buildIngredientTree", () => {
     const dairy_row = rows.find((r) => r.id === "dairy")!;
     const butter_row = dairy_row.subRows[0]!;
     expect(butter_row.name).toBe("Butter");
-    expect(butter_row.default_measurement_value).toEqual({ value: { numerator: 1, denominator: 1 }, unit: "cup" });
+    expect(butter_row.default_measurement_value).toEqual({
+      value: { numerator: 1, denominator: 1 },
+      unit: "cup",
+    });
     expect(butter_row.labels).toEqual(["fat", "solid"]);
     expect(butter_row.parent_id).toBe("dairy");
     expect(butter_row.kind).toBe("ingredient");

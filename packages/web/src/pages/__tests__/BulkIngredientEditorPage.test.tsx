@@ -21,10 +21,7 @@ let doc: Y.Doc;
 
 beforeEach(() => {
   doc = new Y.Doc();
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }),
-  );
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }));
 });
 
 afterEach(() => {

@@ -13,16 +13,10 @@ export function NavMenu({ onNavigate }: NavMenuProps) {
         ☰
       </summary>
       <nav className="nav-menu-dropdown" aria-label="Main navigation">
-        <button
-          className="nav-menu-item"
-          onClick={() => onNavigate("recipe_editor")}
-        >
+        <button className="nav-menu-item" onClick={() => onNavigate("recipe_editor")}>
           Recipes
         </button>
-        <button
-          className="nav-menu-item"
-          onClick={() => onNavigate("bulk_ingredient_editor")}
-        >
+        <button className="nav-menu-item" onClick={() => onNavigate("bulk_ingredient_editor")}>
           Ingredients
         </button>
       </nav>

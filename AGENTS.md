@@ -17,6 +17,7 @@ A local-first single-page web app for creating and managing recipes, with option
 ```
 npm run typecheck     # Typecheck all files
 npm test              # Run all tests
+npm run format        # Run the autoformatter on all files
 npm run lint          # Run the linter on all files
 ```
 
@@ -25,7 +26,7 @@ The app is running at http://localhost:5173, and you can use the Playwright MCP 
 ## Rules
 
 - ALWAYS use relative paths over absolute paths to avoid needing to prompt me for access.
-- MUST ALWAYS run `npm run typecheck`, then `npm test`, and then `npm run lint` for all files before commiting code changes.
+- MUST ALWAYS run `npm run typecheck`, `npm test`, `npm run format`, and then `npm run lint` for all files before commiting code changes.
 - MUST ALWAYS commit all completed work with a comprehensive git commit message using [gitmoji](https://gitmoji.dev/) where applicable.
 - MUST ALWAYS keep CLAUDE.md up-to-date with file structure, architecture, testing, and data models.
 - MUST ALWAYS keep PROJECT_SUMMARY.md up-to-date with any changes to completed features and future development goals.

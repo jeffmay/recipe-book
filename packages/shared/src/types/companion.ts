@@ -62,7 +62,7 @@ export function ScopedCompanion<
 
 /**
  * A {@link Companion} with any name and the provided type (or any companion if no type provided).
- * 
+ *
  * Useful for checking if a companion object matches an expected type output without concern for the name.
  * or for use as a base Companion type when you don't want to specify the lower bounds.
  */

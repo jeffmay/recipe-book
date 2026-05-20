@@ -2,7 +2,7 @@ import { useState, useMemo, type MouseEvent } from "react";
 import CreatableSelect from "react-select/creatable";
 import { components as SelectComponents } from "react-select";
 import type { GroupBase, MenuProps, MultiValue } from "react-select";
-import "./LabelEditor.css"
+import "./LabelEditor.css";
 
 interface LabelOption {
   readonly label: string;
@@ -100,12 +100,7 @@ export function LabelEditor({
         ✔︎
       </button>
       {onCancel !== undefined && (
-        <button
-          type="button"
-          className="it-cancel-btn"
-          onClick={onCancel}
-          aria-label="Cancel edit"
-        >
+        <button type="button" className="it-cancel-btn" onClick={onCancel} aria-label="Cancel edit">
           ✗
         </button>
       )}

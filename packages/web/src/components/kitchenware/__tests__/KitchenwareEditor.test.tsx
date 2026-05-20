@@ -123,10 +123,7 @@ describe("KitchenwareEditor — parent selection", () => {
 
   it("calls onChangeParent with undefined when cleared", async () => {
     setup({ parentId: "------pot000" as ContainerId, containers: [POT] });
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Parent container" }),
-      "",
-    );
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Parent container" }), "");
     expect(onChangeParent).toHaveBeenCalledWith(undefined);
   });
 });

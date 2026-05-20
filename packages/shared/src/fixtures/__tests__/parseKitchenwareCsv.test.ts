@@ -51,7 +51,9 @@ describe("parseKitchenwareCsv", () => {
     const result = parseKitchenwareCsv(SAMPLE_CSV);
     for (const item of result) {
       expect(item.id).toHaveLength(12);
-      expect(item.id.endsWith("butter") || item.id.endsWith("bowl") || item.id.endsWith("oven")).toBe(true);
+      expect(
+        item.id.endsWith("butter") || item.id.endsWith("bowl") || item.id.endsWith("oven"),
+      ).toBe(true);
     }
   });
 
@@ -64,7 +66,9 @@ describe("parseKitchenwareCsv", () => {
   });
 
   it("returns empty array for header-only CSV", () => {
-    expect(parseKitchenwareCsv("Unique ID,Type,Description,Default Measurement Type,Labels\n")).toEqual([]);
+    expect(
+      parseKitchenwareCsv("Unique ID,Type,Description,Default Measurement Type,Labels\n"),
+    ).toEqual([]);
   });
 
   it("throws on unknown type", () => {

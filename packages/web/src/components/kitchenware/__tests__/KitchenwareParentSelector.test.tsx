@@ -126,10 +126,7 @@ describe("KitchenwareParentSelector — onChange", () => {
 
   it("calls onChange with undefined when empty option selected", async () => {
     setup({ value: "------bowl00" as ContainerId });
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Parent container" }),
-      "",
-    );
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Parent container" }), "");
     expect(onChange).toHaveBeenCalledWith(undefined);
   });
 });

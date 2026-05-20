@@ -26,11 +26,22 @@ const WEIGHT_US: readonly WeightUnit[] = ["oz", "lb"];
 const WEIGHT_METRIC: readonly WeightUnit[] = ["g", "kg"];
 
 const UNIT_LABELS: Record<MeasurementUnit, string> = {
-  tsp: "tsp", tbsp: "tbsp", fl_oz: "fl oz", cup: "cup",
-  pint: "pint", quart: "quart", gallon: "gallon",
-  ml: "ml", l: "L",
-  oz: "oz", lb: "lb", g: "g", kg: "kg",
-  whole: "whole", pinch: "pinch", dash: "dash",
+  tsp: "tsp",
+  tbsp: "tbsp",
+  fl_oz: "fl oz",
+  cup: "cup",
+  pint: "pint",
+  quart: "quart",
+  gallon: "gallon",
+  ml: "ml",
+  l: "L",
+  oz: "oz",
+  lb: "lb",
+  g: "g",
+  kg: "kg",
+  whole: "whole",
+  pinch: "pinch",
+  dash: "dash",
 };
 
 const DEFAULT_UNIT: Record<MeasurementType, MeasurementUnit> = {
@@ -86,7 +97,12 @@ export interface MeasurementEditorProps {
   readonly initiallyOpen?: boolean;
 }
 
-export function MeasurementEditor({ value, onCommit, onCancel, initiallyOpen = false }: MeasurementEditorProps) {
+export function MeasurementEditor({
+  value,
+  onCommit,
+  onCancel,
+  initiallyOpen = false,
+}: MeasurementEditorProps) {
   const [editing, setEditing] = useState(initiallyOpen);
   const [original, setOriginal] = useState<Fraction>(value.value);
   const [current, setCurrent] = useState<Fraction>(value.value);
@@ -215,12 +231,16 @@ export function MeasurementEditor({ value, onCommit, onCancel, initiallyOpen = f
               <>
                 <optgroup label="US">
                   {VOLUME_US.map((u) => (
-                    <option key={u} value={u}>{UNIT_LABELS[u]}</option>
+                    <option key={u} value={u}>
+                      {UNIT_LABELS[u]}
+                    </option>
                   ))}
                 </optgroup>
                 <optgroup label="Metric">
                   {VOLUME_METRIC.map((u) => (
-                    <option key={u} value={u}>{UNIT_LABELS[u]}</option>
+                    <option key={u} value={u}>
+                      {UNIT_LABELS[u]}
+                    </option>
                   ))}
                 </optgroup>
               </>
@@ -229,12 +249,16 @@ export function MeasurementEditor({ value, onCommit, onCancel, initiallyOpen = f
               <>
                 <optgroup label="US">
                   {WEIGHT_US.map((u) => (
-                    <option key={u} value={u}>{UNIT_LABELS[u]}</option>
+                    <option key={u} value={u}>
+                      {UNIT_LABELS[u]}
+                    </option>
                   ))}
                 </optgroup>
                 <optgroup label="Metric">
                   {WEIGHT_METRIC.map((u) => (
-                    <option key={u} value={u}>{UNIT_LABELS[u]}</option>
+                    <option key={u} value={u}>
+                      {UNIT_LABELS[u]}
+                    </option>
                   ))}
                 </optgroup>
               </>
@@ -251,7 +275,12 @@ export function MeasurementEditor({ value, onCommit, onCancel, initiallyOpen = f
       </span>
 
       <span className="me-bottom-row">
-        <button type="button" className="fe-toggle-btn" onClick={revertAndClose} aria-label="Reset to original">
+        <button
+          type="button"
+          className="fe-toggle-btn"
+          onClick={revertAndClose}
+          aria-label="Reset to original"
+        >
           {"<"}
         </button>
         <button type="button" className="fe-ok-btn" onClick={commit} aria-label="OK">

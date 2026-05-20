@@ -12,11 +12,7 @@ export function UserMenu({ userName, onProfile }: UserMenuProps) {
         {userName} ▾
       </summary>
       <div className="user-menu-dropdown" role="menu">
-        <button
-          className="user-menu-item"
-          role="menuitem"
-          onClick={onProfile}
-        >
+        <button className="user-menu-item" role="menuitem" onClick={onProfile}>
           Profile settings
         </button>
       </div>

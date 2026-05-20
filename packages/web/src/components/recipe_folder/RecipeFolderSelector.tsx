@@ -8,9 +8,8 @@ function folderToNode(folder: RecipeFolder): TreeNode {
   return {
     key: folder.id,
     label: folder.name,
-    children: folder.children && folder.children.length > 0
-      ? folder.children.map(folderToNode)
-      : undefined,
+    children:
+      folder.children && folder.children.length > 0 ? folder.children.map(folderToNode) : undefined,
   };
 }
 
@@ -107,14 +106,28 @@ export function RecipeFolderSelector({
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") submitNewFolder();
-              if (e.key === "Escape") { setAdding(false); setNewName(""); }
+              if (e.key === "Escape") {
+                setAdding(false);
+                setNewName("");
+              }
             }}
             placeholder="Folder name…"
             aria-label="New folder name"
             autoFocus
           />
-          <button type="button" onClick={submitNewFolder} aria-label="Create folder">✓</button>
-          <button type="button" onClick={() => { setAdding(false); setNewName(""); }} aria-label="Cancel new folder">✕</button>
+          <button type="button" onClick={submitNewFolder} aria-label="Create folder">
+            ✓
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setAdding(false);
+              setNewName("");
+            }}
+            aria-label="Cancel new folder"
+          >
+            ✕
+          </button>
         </span>
       )}
     </div>

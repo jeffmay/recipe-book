@@ -32,11 +32,7 @@ export function SelectUserPage({ onSelect }: SelectUserPageProps) {
           autoFocus
           autoComplete="name"
         />
-        <button
-          type="submit"
-          className="select-user-submit"
-          disabled={name.trim() === ""}
-        >
+        <button type="submit" className="select-user-submit" disabled={name.trim() === ""}>
           Get Started
         </button>
       </form>

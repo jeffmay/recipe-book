@@ -217,7 +217,7 @@
   font-size: 0.85em;
 }
 
-.lt-row--selected>.lt-td {
+.lt-row--selected > .lt-td {
   background: #f0f0f0;
 }
 
@@ -250,7 +250,7 @@
 }
 
 .lt-edit-btn {
-  padding: 1px .5em;
+  padding: 1px 0.5em;
   border: var(--border-width) solid var(--color-border);
   background: var(--color-bg);
   color: var(--color-fg);

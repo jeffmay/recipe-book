@@ -4,15 +4,22 @@ import * as Y from "yjs";
 import { isTypeError } from "../assertions/index.js";
 import { Companion } from "../types/companion.js";
 import { randomId } from "../types/ids.js";
-import { KitchenwareKind, KitchenwareLabelId, type KitchenwareLabel } from "../types/kitchenware.js";
+import {
+  KitchenwareKind,
+  KitchenwareLabelId,
+  type KitchenwareLabel,
+} from "../types/kitchenware.js";
 import { setOf } from "../types/sets.js";
 
 const LABELS_MAP_KEY = "labels";
 
-const StoredLabel = Companion("StoredLabel", type({
-  name: "string",
-  kinds: setOf(KitchenwareKind.type),
-}));
+const StoredLabel = Companion(
+  "StoredLabel",
+  type({
+    name: "string",
+    kinds: setOf(KitchenwareKind.type),
+  }),
+);
 
 export function getLabelsYmap(doc: Y.Doc): Y.Map<unknown> {
   return doc.getMap(LABELS_MAP_KEY);

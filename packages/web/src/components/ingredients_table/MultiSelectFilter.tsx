@@ -8,7 +8,12 @@ export interface MultiSelectFilterProps {
   readonly ariaLabel: string;
 }
 
-export function MultiSelectFilter({ value, onChange, allOptions, ariaLabel }: MultiSelectFilterProps) {
+export function MultiSelectFilter({
+  value,
+  onChange,
+  allOptions,
+  ariaLabel,
+}: MultiSelectFilterProps) {
   const [open, setOpen] = useState(false);
   const [snapshot, setSnapshot] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -23,9 +28,7 @@ export function MultiSelectFilter({ value, onChange, allOptions, ariaLabel }: Mu
   }
 
   function toggleOption(opt: string) {
-    const next = value.includes(opt)
-      ? value.filter((v) => v !== opt)
-      : [...value, opt];
+    const next = value.includes(opt) ? value.filter((v) => v !== opt) : [...value, opt];
     onChange(next);
   }
 
@@ -104,9 +107,7 @@ export function MultiSelectFilter({ value, onChange, allOptions, ariaLabel }: Mu
             placeholder="Search options…"
             aria-label={`Search ${ariaLabel} options`}
           />
-          {visibleOptions.length === 0 && (
-            <div className="msf-no-options">No options</div>
-          )}
+          {visibleOptions.length === 0 && <div className="msf-no-options">No options</div>}
           {visibleOptions.map((opt) => (
             <label key={opt} className="msf-option">
               <input

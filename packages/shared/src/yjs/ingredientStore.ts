@@ -3,7 +3,12 @@ import * as Y from "yjs";
 import { isTypeError } from "../assertions/index.js";
 import type { KitchenwareTemplate } from "../fixtures/kitchenware.js";
 import { loadId } from "../types/ids.js";
-import { Ingredient, IngredientId, KitchenwareKind, KitchenwareLabelId } from "../types/kitchenware.js";
+import {
+  Ingredient,
+  IngredientId,
+  KitchenwareKind,
+  KitchenwareLabelId,
+} from "../types/kitchenware.js";
 import { Measurement, MeasurementType } from "../types/measurement.js";
 import { setOf } from "../types/sets.js";
 import { findOrCreateLabel, getLabelsYmap } from "./labelStore.js";
@@ -33,7 +38,10 @@ function toStored(i: Ingredient) {
   return {
     name: i.name,
     default_measurement_value: {
-      value: { numerator: i.default_measurement_value.value.numerator, denominator: i.default_measurement_value.value.denominator },
+      value: {
+        numerator: i.default_measurement_value.value.numerator,
+        denominator: i.default_measurement_value.value.denominator,
+      },
       unit: i.default_measurement_value.unit,
     },
     labels: [...i.labels],
@@ -46,7 +54,10 @@ function validateStored(id: IngredientId, raw: unknown): Ingredient | null {
   // Migrate old format: default_measurement_type → default_measurement_value
   if (typeof raw === "object" && raw !== null) {
     const r = raw as Record<string, unknown>;
-    if (r["default_measurement_type"] !== undefined && r["default_measurement_value"] === undefined) {
+    if (
+      r["default_measurement_type"] !== undefined &&
+      r["default_measurement_value"] === undefined
+    ) {
       const old_type = r["default_measurement_type"] as string;
       const valid_type = MeasurementType.type(old_type);
       r["default_measurement_value"] = isTypeError(valid_type)
@@ -63,7 +74,10 @@ function validateStored(id: IngredientId, raw: unknown): Ingredient | null {
     id,
     name: result.name,
     default_measurement_value: {
-      value: { numerator: result.default_measurement_value.value.numerator, denominator: result.default_measurement_value.value.denominator },
+      value: {
+        numerator: result.default_measurement_value.value.numerator,
+        denominator: result.default_measurement_value.value.denominator,
+      },
       unit: result.default_measurement_value.unit,
     },
     labels: result.labels,
@@ -160,10 +174,7 @@ export function removeLabelsFromIngredients(
   });
 }
 
-export function removeLabelFromAllIngredients(
-  doc: Y.Doc,
-  label_id: KitchenwareLabelId,
-): void {
+export function removeLabelFromAllIngredients(doc: Y.Doc, label_id: KitchenwareLabelId): void {
   const map = getIngredientYmap(doc);
   doc.transact(() => {
     map.forEach((value, id) => {
@@ -235,11 +246,7 @@ export function setParentForIngredients(
   });
 }
 
-export function renameIngredient(
-  doc: Y.Doc,
-  id: IngredientId,
-  name: string,
-): void {
+export function renameIngredient(doc: Y.Doc, id: IngredientId, name: string): void {
   const map = getIngredientYmap(doc);
   const ingredient = validateStored(id, map.get(id));
   if (ingredient === null) return;

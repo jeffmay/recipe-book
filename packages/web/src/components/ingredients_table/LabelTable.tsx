@@ -30,8 +30,7 @@ export function LabelTable({
   const [editingName, setEditingName] = useState("");
 
   const selectedArray = [...selectedIds];
-  const allSelected =
-    labels.length > 0 && labels.every((l) => selectedIds.has(l.id));
+  const allSelected = labels.length > 0 && labels.every((l) => selectedIds.has(l.id));
   const someSelected = labels.some((l) => selectedIds.has(l.id));
 
   function toggle(id: KitchenwareLabelId): void {
@@ -301,9 +300,7 @@ export function LabelTable({
                         </span>
                       )}
                     </td>
-                    <td className="lt-td lt-td--kinds">
-                      {[...label.kinds].join(", ")}
-                    </td>
+                    <td className="lt-td lt-td--kinds">{[...label.kinds].join(", ")}</td>
                   </tr>
                 ))}
               </tbody>

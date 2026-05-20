@@ -1,4 +1,10 @@
-import { Ingredient, IngredientId, KitchenwareLabel, KitchenwareLabelId, Measurement } from "@recipe-book/shared";
+import {
+  Ingredient,
+  IngredientId,
+  KitchenwareLabel,
+  KitchenwareLabelId,
+  Measurement,
+} from "@recipe-book/shared";
 import { ReadonlyDeep, Simplify } from "type-fest";
 import { type } from "arktype";
 import { ScopedCompanion } from "@recipe-book/shared/src/types/companion";
@@ -6,25 +12,29 @@ import { ScopedCompanion } from "@recipe-book/shared/src/types/companion";
 // Use scope syntax for the self-recursive `subRows` field — arktype's inline
 // `"this[]"` reference trips a "shallow resolution cycle" parse error at
 // module load.
-const ingredientRowScope = type.scope({
-  IngredientRow: {
-    kind: "'ingredient'",
-    id: () => IngredientId.type,
-    name: "string",
-    default_measurement_value: () => Measurement.type,
-    labels: "string[]",
-    "parent_id?": () => IngredientId.type,
-    parent_name: "string",
-    subRows: "IngredientRow[]",
-  },
-}).export();
+const ingredientRowScope = type
+  .scope({
+    IngredientRow: {
+      kind: "'ingredient'",
+      id: () => IngredientId.type,
+      name: "string",
+      default_measurement_value: () => Measurement.type,
+      labels: "string[]",
+      "parent_id?": () => IngredientId.type,
+      parent_name: "string",
+      subRows: "IngredientRow[]",
+    },
+  })
+  .export();
 
 export const IngredientRow = ScopedCompanion(ingredientRowScope, "IngredientRow");
 
 // Make the subRows field a readonly ref with mutable contents — safe to push during build
-export type IngredientRow = Simplify<ReadonlyDeep<Omit<typeof IngredientRow.type.infer, "subRows">> & {
-  readonly subRows: IngredientRow[]
-}>;
+export type IngredientRow = Simplify<
+  ReadonlyDeep<Omit<typeof IngredientRow.type.infer, "subRows">> & {
+    readonly subRows: IngredientRow[];
+  }
+>;
 
 export function buildIngredientTree(
   ingredients: ReadonlyDeep<Ingredient[]>,

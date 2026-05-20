@@ -164,7 +164,8 @@ function validateRecipeVersion(raw: unknown): RecipeVersion | null {
     typeof r["description"] !== "string" ||
     typeof r["created_at"] !== "number" ||
     typeof r["created_by"] !== "string"
-  ) return null;
+  )
+    return null;
 
   const ingredients: RecipeIngredient[] = [];
   if (Array.isArray(r["ingredients"])) {
@@ -300,9 +301,10 @@ export function saveRecipe(doc: Y.Doc, recipe_id: RecipeId, input: SaveRecipeInp
       created_at: input.version.created_at,
       created_by: input.version.created_by,
     };
-    versions = existing.versions.length === 0
-      ? [updated_version]
-      : [...existing.versions.slice(0, -1), updated_version];
+    versions =
+      existing.versions.length === 0
+        ? [updated_version]
+        : [...existing.versions.slice(0, -1), updated_version];
   }
 
   const updated: Recipe = {

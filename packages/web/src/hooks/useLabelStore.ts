@@ -9,7 +9,7 @@ import {
   KitchenwareLabelId,
   removeLabelFromAllIngredients,
   renameLabel as renameLabelInDoc,
-  replaceLabelInAllIngredients
+  replaceLabelInAllIngredients,
 } from "@recipe-book/shared";
 import { loadId, randomId } from "@recipe-book/shared/src/types/ids.js";
 import { useEffect, useState } from "react";
@@ -22,7 +22,10 @@ export interface UseLabelStoreResult {
   readonly findOrCreate: (name: string, kinds: ReadonlySet<KitchenwareKind>) => KitchenwareLabelId;
   readonly renameLabel: (id: KitchenwareLabelId, name: string) => void;
   readonly deleteLabels: (ids: readonly KitchenwareLabelId[]) => void;
-  readonly mergeLabels: (ids: readonly KitchenwareLabelId[], new_name: string) => KitchenwareLabelId;
+  readonly mergeLabels: (
+    ids: readonly KitchenwareLabelId[],
+    new_name: string,
+  ) => KitchenwareLabelId;
 }
 
 export function useLabelStore(): UseLabelStoreResult {

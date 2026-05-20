@@ -12,13 +12,16 @@ export function getRecipeFolderYmap(doc: Y.Doc): Y.Map<unknown> {
 }
 
 // Stored format omits the `children` field — the tree is rebuilt from parent_folder_id
-const StoredRecipeFolder = Companion("StoredRecipeFolder", type({
-  name: "string",
-  "parent_folder_id?": RecipeFolderId.type,
-  tags: "string[]",
-  sort_order: SortOrder.type,
-  "manual_order?": "string[]",
-}));
+const StoredRecipeFolder = Companion(
+  "StoredRecipeFolder",
+  type({
+    name: "string",
+    "parent_folder_id?": RecipeFolderId.type,
+    tags: "string[]",
+    sort_order: SortOrder.type,
+    "manual_order?": "string[]",
+  }),
+);
 type StoredRecipeFolder = typeof StoredRecipeFolder.type.infer;
 
 function toStored(folder: RecipeFolder): StoredRecipeFolder {

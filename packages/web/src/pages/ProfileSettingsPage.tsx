@@ -7,11 +7,7 @@ interface ProfileSettingsPageProps {
   readonly onCancel: () => void;
 }
 
-export function ProfileSettingsPage({
-  currentName,
-  onSave,
-  onCancel,
-}: ProfileSettingsPageProps) {
+export function ProfileSettingsPage({ currentName, onSave, onCancel }: ProfileSettingsPageProps) {
   const [name, setName] = useState(currentName);
   const trimmed = name.trim();
   const isUnchanged = trimmed === currentName;

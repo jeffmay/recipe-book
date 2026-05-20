@@ -1,4 +1,8 @@
-import { type KitchenwareKind, type KitchenwareLabel, KitchenwareLabelId } from "@recipe-book/shared";
+import {
+  type KitchenwareKind,
+  type KitchenwareLabel,
+  KitchenwareLabelId,
+} from "@recipe-book/shared";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReadonlyDeep } from "type-fest";
@@ -193,10 +197,7 @@ describe("LabelTable — merge action", () => {
     await userEvent.click(screen.getByRole("button", { name: "Merge selected labels" }));
     await userEvent.type(screen.getByRole("textbox", { name: "Merged label name" }), "fatty solid");
     await userEvent.click(screen.getByRole("button", { name: "Confirm merge" }));
-    expect(onMerge).toHaveBeenCalledWith(
-      expect.arrayContaining([FAT.id, SOLID.id]),
-      "fatty solid",
-    );
+    expect(onMerge).toHaveBeenCalledWith(expect.arrayContaining([FAT.id, SOLID.id]), "fatty solid");
   });
 
   it("hides merge form on Cancel", async () => {
@@ -210,10 +211,7 @@ describe("LabelTable — merge action", () => {
   it("hides merge form on Escape key", async () => {
     await expand_and_select_two();
     await userEvent.click(screen.getByRole("button", { name: "Merge selected labels" }));
-    await userEvent.type(
-      screen.getByRole("textbox", { name: "Merged label name" }),
-      "{Escape}",
-    );
+    await userEvent.type(screen.getByRole("textbox", { name: "Merged label name" }), "{Escape}");
     expect(screen.queryByRole("textbox", { name: "Merged label name" })).not.toBeInTheDocument();
   });
 });
@@ -252,10 +250,7 @@ describe("LabelTable — inline rename", () => {
   it("cancels rename on Escape key", async () => {
     await expand();
     await userEvent.click(screen.getByRole("button", { name: "Rename label fat" }));
-    await userEvent.type(
-      screen.getByRole("textbox", { name: "Edit label name fat" }),
-      "{Escape}",
-    );
+    await userEvent.type(screen.getByRole("textbox", { name: "Edit label name fat" }), "{Escape}");
     expect(onRename).not.toHaveBeenCalled();
     expect(screen.queryByRole("textbox", { name: "Edit label name fat" })).not.toBeInTheDocument();
   });

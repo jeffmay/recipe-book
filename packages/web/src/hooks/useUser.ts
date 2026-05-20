@@ -9,8 +9,8 @@ export interface UseUserResult {
 }
 
 export function useUser(): UseUserResult {
-  const [userName, setState] = useState<string | null>(
-    () => localStorage.getItem(USER_STORAGE_KEY),
+  const [userName, setState] = useState<string | null>(() =>
+    localStorage.getItem(USER_STORAGE_KEY),
   );
 
   const setUserName = useCallback((name: string) => {

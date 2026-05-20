@@ -45,11 +45,14 @@ const G_PER: ReadonlyDeep<Record<WeightUnit, Fraction | null>> = {
 };
 
 function sameSystemVolume(a: VolumeUnit, b: VolumeUnit): boolean {
-  return (TSP_PER[a] !== null && TSP_PER[b] !== null) ||
-    (ML_PER[a] !== null && ML_PER[b] !== null);
+  return (TSP_PER[a] !== null && TSP_PER[b] !== null) || (ML_PER[a] !== null && ML_PER[b] !== null);
 }
 
-export function convertVolume(value: ReadonlyDeep<Fraction>, from: VolumeUnit, to: VolumeUnit): Fraction {
+export function convertVolume(
+  value: ReadonlyDeep<Fraction>,
+  from: VolumeUnit,
+  to: VolumeUnit,
+): Fraction {
   if (from === to) return value;
   const from_tsp = TSP_PER[from];
   const to_tsp = TSP_PER[to];
@@ -64,7 +67,11 @@ export function convertVolume(value: ReadonlyDeep<Fraction>, from: VolumeUnit, t
   throw new Error(`Cannot convert between ${from} and ${to}: different unit systems`);
 }
 
-export function convertWeight(value: ReadonlyDeep<Fraction>, from: WeightUnit, to: WeightUnit): Fraction {
+export function convertWeight(
+  value: ReadonlyDeep<Fraction>,
+  from: WeightUnit,
+  to: WeightUnit,
+): Fraction {
   if (from === to) return value;
   const from_oz = OZ_PER[from];
   const to_oz = OZ_PER[to];
@@ -79,27 +86,43 @@ export function convertWeight(value: ReadonlyDeep<Fraction>, from: WeightUnit, t
   throw new Error(`Cannot convert between ${from} and ${to}: different unit systems`);
 }
 
-export function largestWholeVolumeUnit(value: ReadonlyDeep<Fraction>, base: VolumeUnit): VolumeUnit {
+export function largestWholeVolumeUnit(
+  value: ReadonlyDeep<Fraction>,
+  base: VolumeUnit,
+): VolumeUnit {
   const us_order: VolumeUnit[] = ["gallon", "quart", "pint", "cup", "fl_oz", "tbsp", "tsp"];
   const metric_order: VolumeUnit[] = ["l", "ml"];
   const candidates = sameSystemVolume(base, "tsp") ? us_order : metric_order;
   for (const candidate of candidates) {
     if (!sameSystemVolume(base, candidate)) continue;
     const converted = convertVolume(value, base, candidate);
-    if (fractionsEqual(converted, { numerator: Math.trunc(converted.numerator / converted.denominator), denominator: 1 })) {
+    if (
+      fractionsEqual(converted, {
+        numerator: Math.trunc(converted.numerator / converted.denominator),
+        denominator: 1,
+      })
+    ) {
       return candidate;
     }
   }
   return base;
 }
 
-export function largestWholeWeightUnit(value: ReadonlyDeep<Fraction>, base: WeightUnit): WeightUnit {
+export function largestWholeWeightUnit(
+  value: ReadonlyDeep<Fraction>,
+  base: WeightUnit,
+): WeightUnit {
   const us_order: WeightUnit[] = ["lb", "oz"];
   const metric_order: WeightUnit[] = ["kg", "g"];
   const candidates = OZ_PER[base] !== null ? us_order : metric_order;
   for (const candidate of candidates) {
     const converted = convertWeight(value, base, candidate);
-    if (fractionsEqual(converted, { numerator: Math.trunc(converted.numerator / converted.denominator), denominator: 1 })) {
+    if (
+      fractionsEqual(converted, {
+        numerator: Math.trunc(converted.numerator / converted.denominator),
+        denominator: 1,
+      })
+    ) {
       return candidate;
     }
   }

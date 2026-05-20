@@ -21,7 +21,11 @@ export interface KitchenwareSelectorProps {
   readonly allLabelNames: readonly string[];
   readonly onChange: (id: ContainerId | undefined) => void;
   readonly onCreateContainer: (name: string) => Container;
-  readonly onUpdateContainer: (id: ContainerId, label_ids: KitchenwareLabelId[], parent_id: ContainerId | undefined) => void;
+  readonly onUpdateContainer: (
+    id: ContainerId,
+    label_ids: KitchenwareLabelId[],
+    parent_id: ContainerId | undefined,
+  ) => void;
   readonly ariaLabel?: string;
   readonly placeholder?: string;
 }
@@ -72,7 +76,12 @@ export function KitchenwareSelector({
       />
 
       {newContainer !== null && (
-        <div className="ks-modal-overlay" role="dialog" aria-modal="true" aria-label="New container">
+        <div
+          className="ks-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="New container"
+        >
           <div className="ks-modal">
             <h3 className="ks-modal-title">New Container: {newContainer.container.name}</h3>
             <KitchenwareEditor
@@ -81,8 +90,12 @@ export function KitchenwareSelector({
               parentId={newContainer.parentId}
               allLabelNames={allLabelNames}
               containers={containers.filter((c) => c.id !== newContainer.container.id)}
-              onChangeLabels={(ids) => setNewContainer((prev) => prev ? { ...prev, labelIds: ids } : prev)}
-              onChangeParent={(id) => setNewContainer((prev) => prev ? { ...prev, parentId: id } : prev)}
+              onChangeLabels={(ids) =>
+                setNewContainer((prev) => (prev ? { ...prev, labelIds: ids } : prev))
+              }
+              onChangeParent={(id) =>
+                setNewContainer((prev) => (prev ? { ...prev, parentId: id } : prev))
+              }
             />
             <div className="ks-modal-actions">
               <button type="button" className="ks-modal-create" onClick={handleSave}>

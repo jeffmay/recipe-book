@@ -39,17 +39,35 @@ export interface ExternalLabelFilter {
 // Helpers
 // ---------------------------------------------------------------------------
 
-const MEASUREMENT_TYPES = ["count", "volume", "weight"] as const satisfies readonly MeasurementType[];
+const MEASUREMENT_TYPES = [
+  "count",
+  "volume",
+  "weight",
+] as const satisfies readonly MeasurementType[];
 
 const UNIT_LABELS: Record<MeasurementUnit, string> = {
-  tsp: "tsp", tbsp: "tbsp", fl_oz: "fl oz", cup: "cup",
-  pint: "pint", quart: "quart", gallon: "gallon",
-  ml: "ml", l: "L",
-  oz: "oz", lb: "lb", g: "g", kg: "kg",
-  whole: "whole", pinch: "pinch", dash: "dash",
+  tsp: "tsp",
+  tbsp: "tbsp",
+  fl_oz: "fl oz",
+  cup: "cup",
+  pint: "pint",
+  quart: "quart",
+  gallon: "gallon",
+  ml: "ml",
+  l: "L",
+  oz: "oz",
+  lb: "lb",
+  g: "g",
+  kg: "kg",
+  whole: "whole",
+  pinch: "pinch",
+  dash: "dash",
 };
 
-const DEFAULT_BULK_MEASUREMENT: Measurement = { value: { numerator: 1, denominator: 1 }, unit: "cup" };
+const DEFAULT_BULK_MEASUREMENT: Measurement = {
+  value: { numerator: 1, denominator: 1 },
+  unit: "cup",
+};
 
 function formatMeasurement(m: Measurement): string {
   const { numerator: n, denominator: d } = m.value;
@@ -57,7 +75,7 @@ function formatMeasurement(m: Measurement): string {
   return `${val} ${UNIT_LABELS[m.unit]}`;
 }
 
-type PKey = type.brand<string, "pkey">
+type PKey = type.brand<string, "pkey">;
 
 function pkey(ingredient_id: IngredientId, col_id: string): PKey {
   return `${ingredient_id}|${col_id}` as PKey;
@@ -120,10 +138,7 @@ export interface IngredientsTableProps {
   readonly onSetLabels: (id: IngredientId, label_names: readonly string[]) => void;
   readonly onSetParent: (id: IngredientId, parent_id: IngredientId | undefined) => void;
   readonly onAddLabels: (ids: readonly IngredientId[], label_names: readonly string[]) => void;
-  readonly onRemoveLabels: (
-    ids: readonly IngredientId[],
-    label_names: readonly string[],
-  ) => void;
+  readonly onRemoveLabels: (ids: readonly IngredientId[], label_names: readonly string[]) => void;
   readonly onBulkSetMeasurementValue: (ids: readonly IngredientId[], value: Measurement) => void;
   readonly onBulkSetParent: (
     ids: readonly IngredientId[],
@@ -195,8 +210,7 @@ export function IngredientsTable({
     return filters;
   }, [nameFilter, typeFilter, labelFilter]);
 
-  const hasActiveFilter =
-    nameFilter !== "" || typeFilter.length > 0 || labelFilter.length > 0;
+  const hasActiveFilter = nameFilter !== "" || typeFilter.length > 0 || labelFilter.length > 0;
 
   // Auto-expand every node while a filter is active so matched descendants
   // (which the table keeps via lenient mode) are actually visible.
@@ -386,7 +400,7 @@ export function IngredientsTable({
   function parentBody(node: TreeNode) {
     const row = node.data as IngredientRow;
     const pending = pendingEdits.get(pkey(row.id, "parent_name"));
-    const display = row.parent_name || "— None -";
+    const display = row.parent_name || "— None —";
     if (pending !== undefined) {
       const pending_id = pending !== "" ? (pending as IngredientId) : undefined;
       return (
@@ -471,11 +485,7 @@ export function IngredientsTable({
       {selectedIds.length > 0 && (
         <div className="it-bulk-bar" role="region" aria-label="Bulk actions">
           <span className="it-bulk-count">{selectedIds.length} selected</span>
-          <button
-            type="button"
-            className="it-bulk-clear"
-            onClick={() => setSelectionKeys({})}
-          >
+          <button type="button" className="it-bulk-clear" onClick={() => setSelectionKeys({})}>
             Clear
           </button>
 

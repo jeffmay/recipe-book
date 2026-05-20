@@ -1,6 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { type } from "arktype";
-import { unitType, VolumeUnit, WeightUnit, CountUnit, Fraction, Measurement } from "../measurement.js";
+import {
+  unitType,
+  VolumeUnit,
+  WeightUnit,
+  CountUnit,
+  Fraction,
+  Measurement,
+} from "../measurement.js";
 import { is } from "../enums.js";
 
 describe("unitType", () => {

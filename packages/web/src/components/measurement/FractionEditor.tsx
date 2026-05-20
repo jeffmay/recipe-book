@@ -170,12 +170,7 @@ export function FractionEditor({ value, onCommit, extraControls }: FractionEdito
 
       <span className="fe-op-buttons">
         {OP_ROWS[opMode].map((op) => (
-          <button
-            key={op.label}
-            type="button"
-            className="fe-op-btn"
-            onClick={() => applyOp(op)}
-          >
+          <button key={op.label} type="button" className="fe-op-btn" onClick={() => applyOp(op)}>
             {op.label}
           </button>
         ))}

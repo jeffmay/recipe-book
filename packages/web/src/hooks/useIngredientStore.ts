@@ -33,7 +33,10 @@ export interface UseIngredientStoreResult {
   readonly ingredients: readonly Ingredient[];
   readonly createIngredient: (input: NewIngredientInput) => IngredientId;
   readonly renameIngredient: (id: IngredientId, name: string) => void;
-  readonly addLabels: (ids: readonly IngredientId[], label_ids: readonly KitchenwareLabelId[]) => void;
+  readonly addLabels: (
+    ids: readonly IngredientId[],
+    label_ids: readonly KitchenwareLabelId[],
+  ) => void;
   readonly removeLabels: (
     ids: readonly IngredientId[],
     label_ids: readonly KitchenwareLabelId[],

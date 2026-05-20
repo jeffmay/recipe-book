@@ -58,16 +58,20 @@ const MAIN_FOLDER: RecipeFolder = {
   name: "Main",
   tags: [],
   sort_order: "alphabetical",
-  children: [
-    { id: SUB_ID, name: "Sub", tags: [], sort_order: "alphabetical", children: [] },
-  ],
+  children: [{ id: SUB_ID, name: "Sub", tags: [], sort_order: "alphabetical", children: [] }],
 };
 
 const onChange = vi.fn();
 const onCreateFolder = vi.fn();
 
 function makeFolder(name: string): RecipeFolder {
-  return { id: "folder-new000" as RecipeFolderId, name, tags: [], sort_order: "alphabetical", children: [] };
+  return {
+    id: "folder-new000" as RecipeFolderId,
+    name,
+    tags: [],
+    sort_order: "alphabetical",
+    children: [],
+  };
 }
 
 function setup(props: Partial<Parameters<typeof RecipeFolderSelector>[0]> = {}) {
@@ -116,19 +120,13 @@ describe("RecipeFolderSelector — display", () => {
 describe("RecipeFolderSelector — selection", () => {
   it("calls onChange with folder id when option selected", async () => {
     setup();
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Select folder" }),
-      MAIN_ID,
-    );
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Select folder" }), MAIN_ID);
     expect(onChange).toHaveBeenCalledWith(MAIN_ID);
   });
 
   it("calls onChange with undefined when empty option selected", async () => {
     setup({ value: MAIN_ID });
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Select folder" }),
-      "",
-    );
+    await userEvent.selectOptions(screen.getByRole("combobox", { name: "Select folder" }), "");
     expect(onChange).toHaveBeenCalledWith(undefined);
   });
 });

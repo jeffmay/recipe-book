@@ -102,11 +102,16 @@ describe("Kitchenware constructors", () => {
 
   it("Container accepts a valid container", () => {
     const result = Container.type({ kind: "container", id: "bowl", name: "Bowl", labels: [] });
-    expect(result).instanceOf(type.errors)
+    expect(result).instanceOf(type.errors);
   });
 
   it("Equipment accepts a valid equipment", () => {
-    const result = Equipment.type({ kind: "equipment", id: paddedId(EquipmentId, "oven"), name: "Oven", labels: new Set() });
+    const result = Equipment.type({
+      kind: "equipment",
+      id: paddedId(EquipmentId, "oven"),
+      name: "Oven",
+      labels: new Set(),
+    });
     expect(result instanceof type.errors).toBe(false);
   });
 });

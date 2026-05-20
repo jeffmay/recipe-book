@@ -46,10 +46,7 @@ beforeEach(() => {
   // Pre-populate so the hook skips async init in most tests
   addIngredient(doc, BUTTER);
 
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }),
-  );
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ text: () => Promise.resolve(MOCK_CSV) }));
 });
 
 afterEach(() => {

@@ -32,11 +32,10 @@ function AppContent({ userName, onRename }: AppContentProps) {
           <NavMenu onNavigate={(page) => setRoute(page)} />
           <span className="app-title">Recipe Book</span>
           <div className="nav-right">
-            <button className="undo-btn" aria-label="Undo">↩ Undo</button>
-            <UserMenu
-              userName={userName}
-              onProfile={() => setRoute("profile_settings")}
-            />
+            <button className="undo-btn" aria-label="Undo">
+              ↩ Undo
+            </button>
+            <UserMenu userName={userName} onProfile={() => setRoute("profile_settings")} />
           </div>
         </header>
 
@@ -67,11 +66,5 @@ export function App() {
     return <SelectUserPage onSelect={setUserName} />;
   }
 
-  return (
-    <AppContent
-      key={userName}
-      userName={userName}
-      onRename={setUserName}
-    />
-  );
+  return <AppContent key={userName} userName={userName} onRename={setUserName} />;
 }

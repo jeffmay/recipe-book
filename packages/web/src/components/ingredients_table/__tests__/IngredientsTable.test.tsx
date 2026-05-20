@@ -170,9 +170,9 @@ describe("IngredientsTable — tree expand/collapse", () => {
   it("expands children on toggler click", async () => {
     setup();
     await screen.findByText("Dairy");
-    const togglers = screen.getAllByRole("button").filter((b) =>
-      b.classList.contains("p-treetable-toggler"),
-    );
+    const togglers = screen
+      .getAllByRole("button")
+      .filter((b) => b.classList.contains("p-treetable-toggler"));
     await userEvent.click(togglers[0]!);
     expect(screen.getByText("Butter")).toBeInTheDocument();
   });
@@ -325,9 +325,14 @@ describe("IngredientsTable — editable cells", () => {
   it("calls onSetMeasurementValue when committing measurement edit", async () => {
     setup([FLOUR]);
     await screen.findByRole("button", { name: "Edit default measurement for Flour" });
-    await userEvent.click(screen.getByRole("button", { name: "Edit default measurement for Flour" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Edit default measurement for Flour" }),
+    );
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
-    expect(onSetMeasurementValue).toHaveBeenCalledWith(FLOUR.id, expect.objectContaining({ unit: "cup" }));
+    expect(onSetMeasurementValue).toHaveBeenCalledWith(
+      FLOUR.id,
+      expect.objectContaining({ unit: "cup" }),
+    );
   });
 
   it("calls onSetLabels when committing labels edit", async () => {
@@ -410,7 +415,10 @@ describe("IngredientsTable — bulk actions", () => {
     await selectFlour();
     await userEvent.click(screen.getByRole("button", { name: "Edit measurement" }));
     await userEvent.click(screen.getByRole("button", { name: "OK" }));
-    expect(onBulkSetMeasurementValue).toHaveBeenCalledWith([FLOUR.id], expect.objectContaining({ unit: "cup" }));
+    expect(onBulkSetMeasurementValue).toHaveBeenCalledWith(
+      [FLOUR.id],
+      expect.objectContaining({ unit: "cup" }),
+    );
   });
 
   it("calls onBulkSetParent when parent is selected and applied", async () => {

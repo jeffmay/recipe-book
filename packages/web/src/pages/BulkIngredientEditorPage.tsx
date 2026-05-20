@@ -1,7 +1,16 @@
-import { findOrCreateLabel, IngredientId, KitchenwareKind, KitchenwareLabelId, type Measurement } from "@recipe-book/shared";
+import {
+  findOrCreateLabel,
+  IngredientId,
+  KitchenwareKind,
+  KitchenwareLabelId,
+  type Measurement,
+} from "@recipe-book/shared";
 import { useState } from "react";
 import { MeasurementEditor } from "../components/measurement/MeasurementEditor.js";
-import { IngredientsTable, type ExternalLabelFilter } from "../components/ingredients_table/IngredientsTable.js";
+import {
+  IngredientsTable,
+  type ExternalLabelFilter,
+} from "../components/ingredients_table/IngredientsTable.js";
 import { LabelTable } from "../components/ingredients_table/LabelTable.js";
 import { useDoc } from "../contexts/docContext.js";
 import { useIngredientStore } from "../hooks/useIngredientStore.js";
@@ -52,9 +61,9 @@ export function BulkIngredientEditorPage() {
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [addForm, setAddForm] = useState<AddFormState>(EMPTY_ADD_FORM);
-  const [externalLabelFilter, setExternalLabelFilter] = useState<
-    ExternalLabelFilter | undefined
-  >(undefined);
+  const [externalLabelFilter, setExternalLabelFilter] = useState<ExternalLabelFilter | undefined>(
+    undefined,
+  );
 
   function resolveLabelNames(labelNames: readonly string[]): readonly KitchenwareLabelId[] {
     return labelNames.map((name) => findOrCreateLabel(doc, name, ingredientKinds));
@@ -87,17 +96,11 @@ export function BulkIngredientEditorPage() {
     setLabels(id, resolveLabelNames(labelNames));
   }
 
-  function handleAddLabels(
-    ids: readonly IngredientId[],
-    labelNames: readonly string[],
-  ): void {
+  function handleAddLabels(ids: readonly IngredientId[], labelNames: readonly string[]): void {
     addLabels(ids, resolveLabelNames(labelNames));
   }
 
-  function handleRemoveLabels(
-    ids: readonly IngredientId[],
-    labelNames: readonly string[],
-  ): void {
+  function handleRemoveLabels(ids: readonly IngredientId[], labelNames: readonly string[]): void {
     const remove_ids = labelNames
       .map((name) => labels.find((l) => l.name === name)?.id)
       .filter((id) => id !== undefined);
@@ -106,10 +109,7 @@ export function BulkIngredientEditorPage() {
     }
   }
 
-  function handleSetParent(
-    id: IngredientId,
-    parent_id: IngredientId | undefined,
-  ): void {
+  function handleSetParent(id: IngredientId, parent_id: IngredientId | undefined): void {
     setParent([id], parent_id);
   }
 
