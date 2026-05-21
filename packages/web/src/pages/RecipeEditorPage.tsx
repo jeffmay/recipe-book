@@ -12,8 +12,11 @@ import {
   type SectionItem,
   type TextBlock,
   loadId,
+  paddedId,
   randomId,
+  ContainerId,
   EquipmentId,
+  RecipeFolderId as RecipeFolderIdCompanion,
   RecipeIngredientId,
   RecipeVersionId,
   SectionItemId,
@@ -198,12 +201,12 @@ function IngredientItemRow({
 // ---------------------------------------------------------------------------
 
 const COMMON_CONTAINERS = [
-  { id: "----------bowl", name: "Bowl" },
-  { id: "----------pot", name: "Pot" },
-  { id: "-------steamer", name: "Steamer" },
-  { id: "----------foil", name: "Foil" },
-  { id: "----------pan", name: "Pan" },
-  { id: "---------plate", name: "Plate" },
+  { id: paddedId(ContainerId, "bowl"), name: "Bowl" },
+  { id: paddedId(ContainerId, "pot"), name: "Pot" },
+  { id: paddedId(ContainerId, "steamer"), name: "Steamer" },
+  { id: paddedId(ContainerId, "foil"), name: "Foil" },
+  { id: paddedId(ContainerId, "pan"), name: "Pan" },
+  { id: paddedId(ContainerId, "plate"), name: "Plate" },
 ] as const;
 
 interface ContainerItemRowProps {
@@ -323,12 +326,12 @@ function ContainerItemRow({
 // ---------------------------------------------------------------------------
 
 const COMMON_EQUIPMENT = [
-  { id: "--------oven", name: "Oven" },
-  { id: "------stove", name: "Stove" },
-  { id: "-------mixer", name: "Mixer" },
-  { id: "------blender", name: "Blender" },
-  { id: "---------knife", name: "Knife" },
-  { id: "-------skillet", name: "Skillet" },
+  { id: paddedId(EquipmentId, "oven"), name: "Oven" },
+  { id: paddedId(EquipmentId, "stove"), name: "Stove" },
+  { id: paddedId(EquipmentId, "mixer"), name: "Mixer" },
+  { id: paddedId(EquipmentId, "blender"), name: "Blender" },
+  { id: paddedId(EquipmentId, "knife"), name: "Knife" },
+  { id: paddedId(EquipmentId, "skillet"), name: "Skillet" },
 ] as const;
 
 interface InstructionRowProps {
@@ -908,7 +911,9 @@ function CopyRecipeDialog({ recipe, flatFolders, onCopy, onCancel }: CopyRecipeD
             className="re-field-select"
             value={folder_id ?? ""}
             onChange={(e) =>
-              setFolderId(e.target.value ? (e.target.value as RecipeFolderId) : undefined)
+              setFolderId(
+                e.target.value ? loadId(RecipeFolderIdCompanion, e.target.value) : undefined,
+              )
             }
             aria-label="Parent folder for copy"
           >
@@ -1134,7 +1139,7 @@ function RecipeEditor({ recipe, userName, onSave, onCancel }: RecipeEditorProps)
             onChange={(e) =>
               patch(
                 "parent_folder_id",
-                e.target.value ? (e.target.value as RecipeFolderId) : undefined,
+                e.target.value ? loadId(RecipeFolderIdCompanion, e.target.value) : undefined,
               )
             }
             aria-label="Parent folder"

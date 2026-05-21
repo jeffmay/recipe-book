@@ -1,4 +1,4 @@
-import { type RecipeFolder, type RecipeFolderId } from "@recipe-book/shared";
+import { type RecipeFolder, RecipeFolderId, paddedId } from "@recipe-book/shared";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
@@ -50,8 +50,8 @@ vi.mock("primereact/treeselect", () => ({
   },
 }));
 
-const MAIN_ID = "folder-main00" as RecipeFolderId;
-const SUB_ID = "folder-sub000" as RecipeFolderId;
+const MAIN_ID = paddedId(RecipeFolderId, "folder-main00");
+const SUB_ID = paddedId(RecipeFolderId, "folder-sub000");
 
 const MAIN_FOLDER: RecipeFolder = {
   id: MAIN_ID,
@@ -66,7 +66,7 @@ const onCreateFolder = vi.fn();
 
 function makeFolder(name: string): RecipeFolder {
   return {
-    id: "folder-new000" as RecipeFolderId,
+    id: paddedId(RecipeFolderId, "folder-new000"),
     name,
     tags: [],
     sort_order: "alphabetical",

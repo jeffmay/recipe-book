@@ -119,7 +119,7 @@ function extractSelectedIds(keys: TreeTableSelectionKeysType): IngredientId[] {
   const ids: IngredientId[] = [];
   for (const [key, val] of Object.entries(keys)) {
     if (typeof val === "object" && val !== null && val.checked === true) {
-      ids.push(key as IngredientId);
+      ids.push(loadId(IngredientId, key));
     }
   }
   return ids;
@@ -259,7 +259,7 @@ export function IngredientsTable({
     } else if (col_id === "labels") {
       onSetLabels(ingredient_id, parseLabels(value));
     } else if (col_id === "parent_name") {
-      onSetParent(ingredient_id, value !== "" ? (value as IngredientId) : undefined);
+      onSetParent(ingredient_id, value !== "" ? loadId(IngredientId, value) : undefined);
     }
 
     setPendingEdits((prev) => {
@@ -403,7 +403,7 @@ export function IngredientsTable({
     const pending = pendingEdits.get(pkey(row.id, "parent_name"));
     const display = row.parent_name || "— None —";
     if (pending !== undefined) {
-      const pending_id = pending !== "" ? (pending as IngredientId) : undefined;
+      const pending_id = pending !== "" ? loadId(IngredientId, pending) : undefined;
       return (
         <span className="it-editing">
           <IngredientSelector
@@ -531,7 +531,7 @@ export function IngredientsTable({
 
           <span className="it-bulk-action">
             <IngredientSelector
-              value={bulkParentId !== "" ? (bulkParentId as IngredientId) : undefined}
+              value={bulkParentId !== "" ? loadId(IngredientId, bulkParentId) : undefined}
               options={ingredients}
               labels={labels}
               onChange={(id) => setBulkParentId(id ?? "")}

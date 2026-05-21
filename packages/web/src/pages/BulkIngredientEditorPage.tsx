@@ -3,6 +3,7 @@ import {
   IngredientId,
   KitchenwareKind,
   KitchenwareLabelId,
+  loadId,
   type Measurement,
 } from "@recipe-book/shared";
 import { useState } from "react";
@@ -71,23 +72,26 @@ export function BulkIngredientEditorPage() {
 
   function handleAddSubmit(e: { preventDefault(): void }): void {
     e.preventDefault();
-    // TODO: Validate parent_id
-    const validParentId = addForm.parent_id as IngredientId;
-    // assertValid(validParentId, { message: "Invalid parent ingredient ID" });
     const labelName = addForm.name.trim();
     if (labelName === "") return;
     const labelNames = addForm.labels_raw
       .split(",")
       .map((l) => l.trim())
       .filter((l) => l !== "");
-    createIngredient({
+    const input: {
+      name: string;
+      default_measurement_value: Measurement;
+      labelNames: string[];
+      parent_id?: IngredientId;
+    } = {
       name: labelName,
       default_measurement_value: addForm.measurement_value,
       labelNames,
-      ...(addForm.parent_id && {
-        parent_id: validParentId,
-      }),
-    });
+    };
+    if (addForm.parent_id !== "") {
+      input.parent_id = loadId(IngredientId, addForm.parent_id);
+    }
+    createIngredient(input);
     setAddForm(EMPTY_ADD_FORM);
     setShowAddForm(false);
   }

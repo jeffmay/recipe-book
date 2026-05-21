@@ -20,7 +20,7 @@ import { is } from "../enums.js";
 describe("kitchenware type guards", () => {
   const ingredient: Kitchenware = {
     kind: "ingredient",
-    id: "butter" as IngredientId,
+    id: paddedId(IngredientId, "butter"),
     name: "Butter",
     default_measurement_value: { value: { numerator: 1, denominator: 1 }, unit: "cup" },
     labels: new Set<KitchenwareLabelId>(),
@@ -28,14 +28,14 @@ describe("kitchenware type guards", () => {
 
   const container: Kitchenware = {
     kind: "container",
-    id: "bowl" as ContainerId,
+    id: paddedId(ContainerId, "bowl"),
     name: "Bowl",
     labels: new Set<KitchenwareLabelId>(),
   };
 
   const equipment: Kitchenware = {
     kind: "equipment",
-    id: "oven" as EquipmentId,
+    id: paddedId(EquipmentId, "oven"),
     name: "Oven",
     labels: new Set<KitchenwareLabelId>(),
   };

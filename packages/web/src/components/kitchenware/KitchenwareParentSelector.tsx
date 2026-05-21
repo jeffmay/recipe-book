@@ -1,4 +1,9 @@
-import { type Container, type ContainerId } from "@recipe-book/shared";
+import {
+  type Container,
+  type ContainerId,
+  ContainerId as ContainerIdCompanion,
+  loadId,
+} from "@recipe-book/shared";
 import type { TreeNode } from "primereact/treenode";
 import { TreeSelect, type TreeSelectChangeEvent } from "primereact/treeselect";
 import { useMemo } from "react";
@@ -60,7 +65,7 @@ export function KitchenwareParentSelector({
     if (v === null || v === undefined || v === "") {
       onChange(undefined);
     } else if (typeof v === "string") {
-      onChange(v as ContainerId);
+      onChange(loadId(ContainerIdCompanion, v));
     }
   }
 

@@ -1,4 +1,9 @@
-import { type Ingredient, type IngredientId, type KitchenwareLabel } from "@recipe-book/shared";
+import {
+  type Ingredient,
+  IngredientId,
+  type KitchenwareLabel,
+  paddedId,
+} from "@recipe-book/shared";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
@@ -54,22 +59,22 @@ vi.mock("primereact/treeselect", () => ({
 
 const DAIRY: Ingredient = {
   kind: "ingredient",
-  id: "dairy000000" as IngredientId,
+  id: paddedId(IngredientId, "dairy000000"),
   name: "Dairy",
   default_measurement_value: { value: { numerator: 1, denominator: 1 }, unit: "cup" as const },
   labels: new Set(),
 };
 const BUTTER: Ingredient = {
   kind: "ingredient",
-  id: "butter00000" as IngredientId,
+  id: paddedId(IngredientId, "butter00000"),
   name: "Butter",
   default_measurement_value: { value: { numerator: 1, denominator: 1 }, unit: "cup" as const },
   labels: new Set(),
-  parent_id: "dairy000000" as IngredientId,
+  parent_id: paddedId(IngredientId, "dairy000000"),
 };
 const CHEESE: Ingredient = {
   kind: "ingredient",
-  id: "cheese00000" as IngredientId,
+  id: paddedId(IngredientId, "cheese00000"),
   name: "Cheese",
   default_measurement_value: { value: { numerator: 1, denominator: 1 }, unit: "oz" as const },
   labels: new Set(),
@@ -112,9 +117,9 @@ describe("IngredientSelector — display", () => {
   });
 
   it("reflects the selected value", () => {
-    setup({ value: "cheese00000" as IngredientId });
+    setup({ value: paddedId(IngredientId, "cheese00000") });
     expect(screen.getByRole("combobox", { name: "Select parent ingredient" })).toHaveValue(
-      "cheese00000",
+      paddedId(IngredientId, "cheese00000"),
     );
   });
 });
@@ -124,9 +129,9 @@ describe("IngredientSelector — tree structure", () => {
     setup();
     const select = screen.getByRole("combobox", { name: "Select parent ingredient" });
     const values = Array.from(select.querySelectorAll("option")).map((o) => o.value);
-    expect(values).toContain("dairy000000");
-    expect(values).toContain("butter00000");
-    expect(values).toContain("cheese00000");
+    expect(values).toContain(paddedId(IngredientId, "dairy000000"));
+    expect(values).toContain(paddedId(IngredientId, "butter00000"));
+    expect(values).toContain(paddedId(IngredientId, "cheese00000"));
   });
 
   it("shows ingredient names as option labels", () => {
@@ -142,13 +147,13 @@ describe("IngredientSelector — onChange", () => {
     setup();
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Select parent ingredient" }),
-      "cheese00000",
+      paddedId(IngredientId, "cheese00000"),
     );
-    expect(onChange).toHaveBeenCalledWith("cheese00000");
+    expect(onChange).toHaveBeenCalledWith(paddedId(IngredientId, "cheese00000"));
   });
 
   it("calls onChange with undefined when the empty option is selected", async () => {
-    setup({ value: "cheese00000" as IngredientId });
+    setup({ value: paddedId(IngredientId, "cheese00000") });
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Select parent ingredient" }),
       "",

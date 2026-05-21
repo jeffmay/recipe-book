@@ -1,4 +1,4 @@
-import { type Container, type ContainerId } from "@recipe-book/shared";
+import { type Container, ContainerId, paddedId } from "@recipe-book/shared";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { TreeSelectChangeEvent } from "primereact/treeselect";
@@ -52,22 +52,22 @@ vi.mock("primereact/treeselect", () => ({
 
 const BOWL: Container = {
   kind: "container",
-  id: "------bowl00" as ContainerId,
+  id: paddedId(ContainerId, "bowl00"),
   name: "Bowl",
   labels: new Set(),
 };
 const POT: Container = {
   kind: "container",
-  id: "------pot000" as ContainerId,
+  id: paddedId(ContainerId, "pot000"),
   name: "Pot",
   labels: new Set(),
 };
 const SMALL_BOWL: Container = {
   kind: "container",
-  id: "---small_bow" as ContainerId,
+  id: paddedId(ContainerId, "small_bow"),
   name: "Small Bowl",
   labels: new Set(),
-  parent_id: "------bowl00" as ContainerId,
+  parent_id: paddedId(ContainerId, "bowl00"),
 };
 
 const onChange = vi.fn();
@@ -103,14 +103,16 @@ describe("KitchenwareParentSelector — display", () => {
     setup();
     const select = screen.getByRole("combobox", { name: "Parent container" });
     const values = Array.from(select.querySelectorAll("option")).map((o) => o.value);
-    expect(values).toContain("------bowl00");
-    expect(values).toContain("------pot000");
-    expect(values).toContain("---small_bow");
+    expect(values).toContain(paddedId(ContainerId, "bowl00"));
+    expect(values).toContain(paddedId(ContainerId, "pot000"));
+    expect(values).toContain(paddedId(ContainerId, "small_bow"));
   });
 
   it("reflects the selected value", () => {
-    setup({ value: "------pot000" as ContainerId });
-    expect(screen.getByRole("combobox", { name: "Parent container" })).toHaveValue("------pot000");
+    setup({ value: paddedId(ContainerId, "pot000") });
+    expect(screen.getByRole("combobox", { name: "Parent container" })).toHaveValue(
+      paddedId(ContainerId, "pot000"),
+    );
   });
 });
 
@@ -119,13 +121,13 @@ describe("KitchenwareParentSelector — onChange", () => {
     setup();
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Parent container" }),
-      "------bowl00",
+      paddedId(ContainerId, "bowl00"),
     );
-    expect(onChange).toHaveBeenCalledWith("------bowl00");
+    expect(onChange).toHaveBeenCalledWith(paddedId(ContainerId, "bowl00"));
   });
 
   it("calls onChange with undefined when empty option selected", async () => {
-    setup({ value: "------bowl00" as ContainerId });
+    setup({ value: paddedId(ContainerId, "bowl00") });
     await userEvent.selectOptions(screen.getByRole("combobox", { name: "Parent container" }), "");
     expect(onChange).toHaveBeenCalledWith(undefined);
   });

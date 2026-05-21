@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { parseKitchenwareCsv } from "../kitchenware.js";
+import { paddedId } from "../../types/ids.js";
+import { ContainerId, EquipmentId, IngredientId } from "../../types/kitchenware.js";
 
 // IDs are left-padded to 12 characters with "-" by the parser
 const SAMPLE_CSV = `Unique ID,Type,Description,Default Measurement Type,Labels
@@ -8,9 +10,9 @@ bowl,container,Bowl,count,vessel
 oven,equipment,Oven,count,heat
 `;
 
-const BUTTER_ID = "------butter";
-const BOWL_ID = "--------bowl";
-const OVEN_ID = "--------oven";
+const BUTTER_ID = paddedId(IngredientId, "butter");
+const BOWL_ID = paddedId(ContainerId, "bowl");
+const OVEN_ID = paddedId(EquipmentId, "oven");
 
 describe("parseKitchenwareCsv", () => {
   it("parses ingredient rows", () => {
@@ -90,7 +92,7 @@ x,ingredient,X,units,
 water,ingredient,Water,volume,
 `;
     const result = parseKitchenwareCsv(csv);
-    const water = result.find((k) => k.id === "-------water");
+    const water = result.find((k) => k.id === paddedId(IngredientId, "water"));
     expect(water).toBeDefined();
     if (water === undefined) return;
     if (water.kind !== "ingredient") return;

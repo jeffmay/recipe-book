@@ -1,4 +1,9 @@
-import { type RecipeFolder, type RecipeFolderId } from "@recipe-book/shared";
+import {
+  type RecipeFolder,
+  type RecipeFolderId,
+  RecipeFolderId as RecipeFolderIdCompanion,
+  loadId,
+} from "@recipe-book/shared";
 import type { TreeNode } from "primereact/treenode";
 import { TreeSelect, type TreeSelectChangeEvent } from "primereact/treeselect";
 import { useMemo, useState } from "react";
@@ -55,7 +60,7 @@ export function RecipeFolderSelector({
     if (v === null || v === undefined || v === "") {
       onChange(undefined);
     } else if (typeof v === "string") {
-      onChange(v as RecipeFolderId);
+      onChange(loadId(RecipeFolderIdCompanion, v));
     }
   }
 
@@ -63,7 +68,7 @@ export function RecipeFolderSelector({
     const name = newName.trim();
     if (!name) return;
     const created = onCreateFolder(name, value);
-    onChange(created.id as RecipeFolderId);
+    onChange(loadId(RecipeFolderIdCompanion, created.id));
     setNewName("");
     setAdding(false);
   }
